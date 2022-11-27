@@ -15,28 +15,32 @@ export default function CreatePin() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [emptypin, setEmptyPin] = useState(true);
-  const [pin1, setPin1] = useState(null);
+  const [pin1, setPin1] = useState("");
   const [pin2, setPin2] = useState("");
   const [showConfirmInput, setShowConfirmInput] = useState(false);
-  const isLoading = useSelector((state) => state.user?.isLoading);
-  const errorMsg = useSelector((state) => state.user?.error);
-  const userData = useSelector((state) => state.auth?.userData);
+  const isLoading = useSelector((state) => state.user.isLoading);
+  const errorMsg = useSelector((state) => state.user.error);
+  const userData = useSelector((state) => state.auth.userData);
+  const user = useSelector((state) => state.profile);
 
   const checkEmptyPin = (pin1, pin2) => {
-    if (!pin1 || pin1?.length !== 6 || !pin2 || pin2.length !== 6)
+    if (!pin1 || pin1.length !== 6 || !pin2 || pin2.length !== 6)
       return setEmptyPin(true);
     pin1 && pin2 && setEmptyPin(false);
   };
 
   const handlerPin1 = (e) => setPin1(`${e}`);
   const handlerPin2 = (e) => setPin2(`${e}`);
+
+  console.log(pin1, pin2);
   const showConfirmHandler = (pin1) => {
-    if (pin1?.length != 6) return setShowConfirmInput(false);
+    if (pin1.length != 6) return setShowConfirmInput(false);
     return setShowConfirmInput(true);
   };
 
   const createPinSuccess = () => {
     toast.success("Create Pin Success, Enjoy!");
+    router.push(`/dashboard/${user.fullName}`);
     console.log("Directed to Dashboard");
   };
 

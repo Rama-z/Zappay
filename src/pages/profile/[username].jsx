@@ -6,8 +6,10 @@ import css from "styles/Profile.module.css";
 import Image from "next/image";
 
 import sample from "../../assets/avatar.webp";
+import { useSelector } from "react-redux";
 
 function index() {
+  const user = useSelector((state) => state.user);
   return (
     <>
       <Header title={"HOME"} />
@@ -38,10 +40,12 @@ function index() {
                         <p>Edit</p>
                       </div>
                       <div className={css["name"]}>
-                        <p>Ngab Toto</p>
+                        <p>
+                          {user.profile.firstName} {user.profile.lastName}
+                        </p>
                       </div>
                       <div className={css["phone"]}>
-                        <p>+62 813-9387-7946</p>
+                        <p>{user.profile.noTelp}</p>
                       </div>
                     </div>
                   </div>

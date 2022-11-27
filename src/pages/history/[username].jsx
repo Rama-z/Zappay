@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "components/Header";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import Footer from "components/Footer";
 import css from "styles/History.module.css";
-import user from "src/assets/1.png";
-import user2 from "src/assets/image.png";
+import user1 from "src/assets/1.png";
+import { useDispatch, useSelector } from "react-redux";
+import userAction from "src/redux/actions/user";
 
 function Home() {
   const isData = true;
   const [filter, setFilter] = useState(false);
+  const user = useSelector((state) => state.user);
+  const [page, setPage] = useState(1);
+  console.log(page);
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      userAction.getUserHistoryThunk(
+        auth.userData.token,
+        `?page=${page}&limit=5&filter=MONTH`
+      )
+    );
+  }, [auth, page]);
   return (
     <>
       <Header title={"HOME"} />
@@ -38,60 +53,65 @@ function Home() {
           </div>
           {isData ? (
             <div>
-              <div className={css["card"]}>
-                <div className={css["image-name"]}>
-                  <Image src={user} alt="user" width={56} height={56} />
-                  <div>
-                    <p className={css["username"]}>Samuel Suhi</p>
-                    <p className={css.status}>Accept</p>
-                  </div>
-                </div>
-                <div>
-                  <p className={css.recieve}>+Rp50.000</p>
-                </div>
-              </div>
-              <div className={css["card"]}>
-                <div className={css["image-name"]}>
-                  <Image src={user2} alt="user" width={56} height={56} />
-                  <div>
-                    <p className={css["username"]}>Samuel Suhi</p>
-                    <p className={css.status}>Transfer</p>
-                  </div>
-                </div>
-                <div>
-                  <p className={css.paid}>-Rp149.000</p>
-                </div>
-              </div>
-              <div className={css["card"]}>
-                <div className={css["image-name"]}>
-                  <Image src={user} alt="user" width={56} height={56} />
-                  <div>
-                    <p className={css["username"]}>Samuel Suhi</p>
-                    <p className={css.status}>Accept</p>
-                  </div>
-                </div>
-                <div>
-                  <p className={css.recieve}>+Rp50.000</p>
-                </div>
-              </div>
-              <div className={css["card"]}>
-                <div className={css["image-name"]}>
-                  <Image src={user2} alt="user" width={56} height={56} />
-                  <div>
-                    <p className={css["username"]}>Samuel Suhi</p>
-                    <p className={css.status}>Transfer</p>
-                  </div>
-                </div>
-                <div>
-                  <p className={css.paid}>-Rp149.000</p>
-                </div>
-              </div>
+              {user.history &&
+                user.history.map((item) => {
+                  return (
+                    <div className={css["card"]}>
+                      <div className={css["image-name"]}>
+                        <Image src={user1} alt="user" width={56} height={56} />
+                        <div>
+                          <p className={css["username"]}>{item.fullName}</p>
+                          <p className={css.status}>{item.type}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <p
+                          className={
+                            item.type === "accept" ? css.recieve : css.paid
+                          }
+                        >
+                          {item.type === "accept"
+                            ? `+${item.amount}`
+                            : `-${item.amount}`}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           ) : (
             <div>
               <div className={css["no-data"]}>No Data Available</div>
             </div>
           )}
+          <div className={`${css["paginasi"]}`}>
+            <button
+              type="submit"
+              className={`${css["previous-button"]} btn ${
+                user.pagination.page === 1 ? `btn-secondary` : `btn-primary`
+              } `}
+              disabled={user.pagination.page === 1}
+              onClick={() => {
+                setPage(page - 1);
+              }}
+            >
+              Previous
+            </button>
+            <button
+              type="submit"
+              className={`${css["next-button"]} btn ${
+                user.pagination.page === user.pagination.totalPage
+                  ? `btn-secondary`
+                  : `btn-primary`
+              } `}
+              disabled={user.pagination.page === user.pagination.totalPage}
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              Next
+            </button>
+          </div>
         </aside>
       </section>
       <Footer />

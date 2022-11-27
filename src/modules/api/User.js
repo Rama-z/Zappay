@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`;
+const baseUrl2 = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
 
 const config = (token) => {
   return {
@@ -10,8 +11,17 @@ const config = (token) => {
   };
 };
 
+export const getAllUser = (token, link) =>
+  axios.get(`${baseUrl}${link}`, config(token));
+
 export const getDetailUser = (token, id) =>
   axios.get(`${baseUrl}/profile/${id}`, config(token));
+
+export const getExpense = (token, id) =>
+  axios.get(`${baseUrl2}/dashboard/${id}`, config(token));
+
+export const getHistory = (token, link) =>
+  axios.get(`${baseUrl2}/transaction/history${link}`, config(token));
 
 export const checkPin = (token, pin) =>
   axios.get(`${baseUrl}/pin?pin=${pin}`, config(token));

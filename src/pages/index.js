@@ -33,7 +33,7 @@ export default function Home() {
   };
 
   const handleSignup = () => {
-    router.push("/signup");
+    router.push("/register");
   };
 
   return (

@@ -1,28 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Header from "components/Header";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import Footer from "components/Footer";
 import css from "styles/Ammount.module.css";
-import user1 from "src/assets/1.png";
+import user from "src/assets/1.png";
 import { useRouter } from "next/router";
 import pen from "src/assets/Vector-pen.png";
-import { useDispatch, useSelector } from "react-redux";
-import authAction from "src/redux/actions/auth";
-import userAction from "src/redux/actions/user";
 
 function Home() {
   const router = useRouter();
-  const user = useSelector((state) => state.user);
-  const auth = useSelector((state) => state.auth);
-  const link = process.env.CLOUDINARY_LINK;
   const [filter, setFilter] = useState(false);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(userAction.getUserDetailThunk(auth.userData.token));
-  }, [auth]);
-
   return (
     <>
       <Header title={"HOME"} />
@@ -38,7 +27,7 @@ function Home() {
             </div>
             <div className={css["card"]}>
               <div className={css["image-name"]}>
-                <Image src={user1} alt="user" width={56} height={56} />
+                <Image src={user} alt="user" width={56} height={56} />
                 <div>
                   <p className={css["username"]}>Samuel Suhi</p>
                   <p className={css.status}>+62 8139 3877 7946</p>

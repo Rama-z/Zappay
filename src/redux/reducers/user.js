@@ -6,6 +6,7 @@ const initialState = {
   isFulfilled: false,
   isError: false,
   error: null,
+  allData: [],
   profile: {
     firstName: null,
     lastName: null,
@@ -14,13 +15,28 @@ const initialState = {
     noTelp: null,
     balance: null,
   },
+  dashboard: {
+    totalIncome: null,
+    totalExpense: null,
+    listIncome: [],
+    listExpense: [],
+  },
+  history: [],
+  pagination: {
+    page: null,
+    totalPage: null,
+    limit: null,
+    totalData: null,
+  },
 };
 
 const userReducer = (prevState = initialState, { type, payload }) => {
-  console.log(payload);
   const { Pending, Rejected, Fulfilled } = ActionType;
   const {
+    userGetAll,
     userDetail,
+    userExpense,
+    userHistory,
     userCheckPin,
     userEditProfile,
     userEditPhone,
@@ -31,6 +47,44 @@ const userReducer = (prevState = initialState, { type, payload }) => {
   } = actionStrings;
 
   switch (type) {
+    case userGetAll.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case userGetAll.concat("_", Rejected):
+      return {
+        ...prevState,
+        isError: true,
+        isLoading: false,
+        isFulfilled: false,
+        error: payload.error.message,
+      };
+    case userGetAll.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isError: false,
+        isFulfilled: true,
+        isLoading: false,
+        allData: payload.data.data.map((item) => {
+          return {
+            id: item.id,
+            firstName: item.firstName,
+            lastName: item.lastName,
+            noTelp: item.noTelp,
+            image: item.image,
+          };
+        }),
+        pagination: {
+          page: payload.data.pagination.page,
+          totalPage: payload.data.pagination.totalPage,
+          limit: payload.data.pagination.limit,
+          totalData: payload.data.pagination.totalData,
+        },
+      };
+
     case userDetail.concat("_", Pending):
       return {
         ...prevState,
@@ -44,11 +98,12 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data.msg,
+        error: payload.error.message,
       };
     case userDetail.concat("_", Fulfilled):
       return {
         ...prevState,
+        isError: false,
         isFulfilled: true,
         isLoading: false,
         profile: {
@@ -58,6 +113,82 @@ const userReducer = (prevState = initialState, { type, payload }) => {
           image: payload.data.data.image,
           noTelp: payload.data.data.noTelp,
           balance: payload.data.data.balance,
+        },
+      };
+
+    case userExpense.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case userExpense.concat("_", Rejected):
+      return {
+        ...prevState,
+        isError: true,
+        isLoading: false,
+        isFulfilled: false,
+        error: payload.error.message,
+      };
+    case userExpense.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isError: false,
+        isFulfilled: true,
+        isLoading: false,
+        dashboard: {
+          totalIncome: payload.data.data.totalIncome,
+          totalExpense: payload.data.data.totalExpense,
+          listIncome: payload.data.data.listIncome.map((item) => {
+            return { day: item.day, total: item.total };
+          }),
+          listExpense: payload.data.data.listExpense.map((item) => {
+            return { day: item.day, total: item.total };
+          }),
+        },
+      };
+
+    case userHistory.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case userHistory.concat("_", Rejected):
+      return {
+        ...prevState,
+        isError: true,
+        isLoading: false,
+        isFulfilled: false,
+        error: payload.error.message,
+      };
+    case userHistory.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isError: false,
+        isFulfilled: true,
+        isLoading: false,
+        history: payload.data.data.map((item) => {
+          return {
+            firstName: item.firstName,
+            image: item.image,
+            lastName: item.lastname,
+            id: item.id,
+            amount: item.amount,
+            status: item.status,
+            notes: item.notes,
+            createdAt: item.createdAt,
+            fullName: item.fullName,
+            type: item.type,
+          };
+        }),
+        pagination: {
+          page: payload.data.pagination.page,
+          totalPage: payload.data.pagination.totalPage,
+          limit: payload.data.pagination.limit,
+          totalData: payload.data.pagination.totalData,
         },
       };
 
@@ -74,7 +205,7 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data.msg,
+        error: payload.error.message,
       };
     case userCheckPin.concat("_", Fulfilled):
       return {
@@ -96,7 +227,7 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data.msg,
+        error: payload.error.message,
       };
     case userEditProfile.concat("_", Fulfilled):
       return {
@@ -118,7 +249,7 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data.msg,
+        error: payload.error.message,
       };
     case userEditPhone.concat("_", Fulfilled):
       return {
@@ -140,7 +271,7 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data.msg,
+        error: payload.error.message,
       };
     case userEditImage.concat("_", Fulfilled):
       return {
@@ -162,8 +293,9 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response?.data.msg,
+        error: payload.error.message,
       };
+
     case userEditPin.concat("_", Fulfilled):
       return {
         ...prevState,
@@ -184,7 +316,7 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data.msg,
+        error: payload.error.message,
       };
     case userEditPassword.concat("_", Fulfilled):
       return {
@@ -206,7 +338,7 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data.msg,
+        error: payload.error.message,
       };
     case userDeleteImage.concat("_", Fulfilled):
       return {

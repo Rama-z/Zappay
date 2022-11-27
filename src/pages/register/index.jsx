@@ -3,15 +3,24 @@ import React, { useEffect, useState } from "react";
 import Layout from "components/LayoutAuth";
 import PageTitle from "components/Header";
 import styles from "styles/Register.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import authAction from "src/redux/actions/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [emptyForm, setEmptyForm] = useState(true);
   const [unouthorized, setUnouthorized] = useState(false);
   const [body, setBody] = useState({});
+  const dispath = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const router = useRouter();
 
   const registerHandler = (e) => {
     e.preventDefault();
+    dispath(authAction.registerThunk(body));
   };
 
   const togglePassword = () => setShowPassword(!showPassword);
@@ -29,9 +38,19 @@ export default function Register() {
   const changehandler = (e) => {
     setBody({ ...body, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (auth.isLoading) setEmptyForm(true);
+    if (auth.isFulfilled) {
+      toast.success(`Register success, please login first`);
+      router.push("/login");
+    }
+  }, [auth]);
+
   useEffect(() => {
     checkEmptyForm(body);
   }, [body]);
+
   return (
     <>
       <PageTitle title="Register" />

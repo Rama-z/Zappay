@@ -4,14 +4,19 @@ import profile from "src/assets/profile.png";
 import css from "src/styles/Navbar.module.css";
 import Sidebar from "components/Sidebar";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 function Navbar({ children }) {
   const [show, setShow] = useState(false);
   const router = useRouter();
+  const user = useSelector((state) => state.user);
+  const link = process.env.CLOUDINARY_LINK;
+
   const notifHandler = (e) => {
     e.preventDefault();
     setShow(!show);
   };
+
   const sidebarHandler = (e) => {
     e.preventDefault();
     show === true && setShow(false);
@@ -35,18 +40,32 @@ function Navbar({ children }) {
         </div>
         <div className={css["navbar-right"]}>
           <div className={css["mobile"]}>
-            <Image src={profile} alt="profile" style={{ cursor: "pointer" }} />
+            <Image
+              src={`${process.env.CLOUDINARY_LINK}${user.profile.image}`}
+              alt="profile"
+              style={{ cursor: "pointer" }}
+              width={50}
+              height={50}
+            />
             <div className={css["name-phone"]}>
               <p className={css["greating"]}>Hello,</p>
-              <p className={css["navbar-name"]}>Robert Chandler</p>
+              <p className={css["navbar-name"]}>
+                {user.profile.firstName} {user.profile.lastName}
+              </p>
               {/* <p className={css["navbar-phone"]}>+62 8139 3877 7946</p> */}
             </div>
           </div>
           <div className={css["pc"]}>
-            <Image src={profile} alt="profile" style={{ cursor: "pointer" }} />
+            <Image
+              src={user.profile.image}
+              alt="profile"
+              style={{ cursor: "pointer" }}
+            />
             <div className={css["name-phone"]}>
-              <p className={css["navbar-name"]}>Robert Chandler</p>
-              <p className={css["navbar-phone"]}>+62 8139 3877 7946</p>
+              <p className={css["navbar-name"]}>
+                {user.profile.firstName} {user.profile.lastName}
+              </p>
+              <p className={css["navbar-phone"]}>{user.profile.noTelp}</p>
             </div>
           </div>
           <i

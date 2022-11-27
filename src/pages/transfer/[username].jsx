@@ -1,19 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "components/Header";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import Footer from "components/Footer";
 import css from "styles/Transfer.module.css";
-import user from "src/assets/1.png";
+import user1 from "src/assets/1.png";
 import user2 from "src/assets/image.png";
 import search from "src/assets/search.png";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import userAction from "src/redux/actions/user";
+
+// const ReactCodeInput = dynamic(import("react-code-input"));
 
 function Home() {
   const router = useRouter();
-  const isData = true;
   const [filter, setFilter] = useState(false);
+  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
+  const [page, setPage] = useState(1);
+  const [searchs, setSearchs] = useState("");
+  const dispatch = useDispatch();
+
+  // const searchHandler = (e) => {
+  //   setSearchs(`${e}`);
+  // };
+
+  // useEffect(() => {
+  //   searchHandler();
+  // });
+
+  useEffect(() => {
+    dispatch(
+      userAction.getAllUserThunk(
+        auth.userData.token,
+        `?page=${page}&limit=5&search=${searchs}`
+      )
+    );
+  }, [auth, page]);
   return (
     <>
       <Header title={"HOME"} />
@@ -31,58 +56,68 @@ function Home() {
             <input
               type="text"
               className={css.searchInput}
+              // onChange={searchHandler}
               placeholder="Search receiver here"
             />
           </div>
-          {isData ? (
-            <div>
-              <div
-                className={css["card"]}
-                onClick={() => {
-                  router.push("/ammount/:id");
-                }}
-              >
-                <div className={css["image-name"]}>
-                  <Image src={user} alt="user" width={56} height={56} />
-                  <div>
-                    <p className={css["username"]}>Samuel Suhi</p>
-                    <p className={css.status}>+62 8139 3877 7946</p>
+          {user.allData ? (
+            user.allData.map((item) => {
+              return (
+                <div>
+                  <div
+                    className={css["card"]}
+                    onClick={() => {
+                      router.push("/ammount/:id");
+                    }}
+                  >
+                    <div className={css["image-name"]}>
+                      <Image src={user1} alt="user" width={56} height={56} />
+                      <div>
+                        <p
+                          className={css["username"]}
+                        >{`${item.firstName} ${item.lastName}`}</p>
+                        <p className={css.status}>
+                          {item.noTelp ? item.noTelp : "-"}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={css["card"]}>
-                <div className={css["image-name"]}>
-                  <Image src={user2} alt="user" width={56} height={56} />
-                  <div>
-                    <p className={css["username"]}>Samuel Suhi</p>
-                    <p className={css.status}>+62 8139 3877 7946</p>
-                  </div>
-                </div>
-              </div>
-              <div className={css["card"]}>
-                <div className={css["image-name"]}>
-                  <Image src={user} alt="user" width={56} height={56} />
-                  <div>
-                    <p className={css["username"]}>Samuel Suhi</p>
-                    <p className={css.status}>+62 8139 3877 7946</p>
-                  </div>
-                </div>
-              </div>
-              <div className={css["card"]}>
-                <div className={css["image-name"]}>
-                  <Image src={user2} alt="user" width={56} height={56} />
-                  <div>
-                    <p className={css["username"]}>Samuel Suhi</p>
-                    <p className={css.status}>+62 8139 3877 7946</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+              );
+            })
           ) : (
             <div>
               <div className={css["no-data"]}>No Data Available</div>
             </div>
           )}
+          <div className={`${css["paginasi"]}`}>
+            <button
+              type="submit"
+              className={`${css["previous-button"]} btn ${
+                user.pagination.page === 1 ? `btn-secondary` : `btn-primary`
+              } `}
+              disabled={user.pagination.page === 1}
+              onClick={() => {
+                setPage(page - 1);
+              }}
+            >
+              Previous
+            </button>
+            <button
+              type="submit"
+              className={`${css["next-button"]} btn ${
+                user.pagination.page === user.pagination.totalPage
+                  ? `btn-secondary`
+                  : `btn-primary`
+              } `}
+              disabled={user.pagination.page === user.pagination.totalPage}
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              Next
+            </button>
+          </div>
         </aside>
       </div>
       <Footer />

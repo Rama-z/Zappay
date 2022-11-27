@@ -17,8 +17,8 @@ export default function Login() {
   const [body, setBody] = useState({});
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
   const router = useRouter();
-  console.log(auth.userData.pin);
 
   const checkEmptyForm = (body) => {
     if (!body.email || !body.password) return setEmptyForm(true);
@@ -26,13 +26,6 @@ export default function Login() {
   };
 
   const togglePassword = () => setShowPassword(!showPassword);
-
-  // const loginSuccess = () => {
-  //   if (!auth.userData.pin)
-  //     return toast.success(`Login Success! Please Create Your Pin`);
-  //   toast.success(`Login Success! welcome ${body.email}`);
-  // };
-  // const loginDenied = () => toast.error(`Login Failed: ${auth.error}`);
 
   const changeHandler = (e) =>
     setBody({ ...body, [e.target.name]: e.target.value });
@@ -58,8 +51,19 @@ export default function Login() {
       }
       if (auth.userData.pin) {
         toast.success(`Login Success! welcome ${body.email}`);
-        router.push("/dashboard/:id");
+        router.push(`/dashboard/${user.profile.firstName}`);
       }
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (auth.isError) {
+      if (auth.err === "Account not active")
+        toast.error(
+          `${auth.err}, Please check your email and activate your account`
+        );
+      if (auth.err === "Wrong password")
+        toast.error(`${auth.err}, Please make sure your password is right `);
     }
   }, [auth]);
 

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { use, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Styles from "styles/Sidebar.module.css";
 import authAction from "src/redux/actions/auth";
 import { toast } from "react-toastify";
@@ -15,6 +15,8 @@ function Sidebar() {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     console.log(router.pathname.includes("history"));
@@ -38,7 +40,7 @@ function Sidebar() {
     setTransfer(false);
     setTopUp(false);
     setProfile(false);
-    router.push("/dashboard/:username");
+    router.push(`/dashboard/${user.profile.firstName}`);
   };
   const transferHandler = (e) => {
     e.preventDefault();
@@ -46,7 +48,7 @@ function Sidebar() {
     setTransfer(true);
     setTopUp(false);
     setProfile(false);
-    router.push("/transfer/:username");
+    router.push(`/transfer/${user.profile.firstName}`);
   };
   const topupHandler = (e) => {
     e.preventDefault();
@@ -54,6 +56,7 @@ function Sidebar() {
     setTransfer(false);
     setTopUp(true);
     setProfile(false);
+    // router.push(`/topup/${user.profile.firstName}`);
   };
   const profileHandler = (e) => {
     e.preventDefault();
@@ -61,7 +64,7 @@ function Sidebar() {
     setTransfer(false);
     setTopUp(false);
     setProfile(true);
-    router.push("/profile/:username");
+    router.push(`/profile/${user.profile.firstName}`);
   };
 
   const toggleHandler = () => {

@@ -8,10 +8,27 @@ import {
   editPin,
   editProfile,
   getDetailUser,
+  getExpense,
+  getHistory,
+  getAllUser,
 } from "src/modules/api/User";
 import { actionStrings } from "./actionStrings";
 
 const { Pending, Rejected, Fulfilled } = ActionType;
+
+const userGetAllPending = () => ({
+  type: actionStrings.userGetAll.concat("_", Pending),
+});
+
+const userGetAllRejected = (error) => ({
+  type: actionStrings.userGetAll.concat("_", Rejected),
+  payload: { error },
+});
+
+const userGetAllFulfilled = (data) => ({
+  type: actionStrings.userGetAll.concat("_", Fulfilled),
+  payload: { data },
+});
 
 const userDetailPending = () => ({
   type: actionStrings.userDetail.concat("_", Pending),
@@ -24,6 +41,34 @@ const userDetailRejected = (error) => ({
 
 const userDetailFulfilled = (data) => ({
   type: actionStrings.userDetail.concat("_", Fulfilled),
+  payload: { data },
+});
+
+const userExpensePending = () => ({
+  type: actionStrings.userExpense.concat("_", Pending),
+});
+
+const userExpenseRejected = (error) => ({
+  type: actionStrings.userExpense.concat("_", Rejected),
+  payload: { error },
+});
+
+const userExpenseFulfilled = (data) => ({
+  type: actionStrings.userExpense.concat("_", Fulfilled),
+  payload: { data },
+});
+
+const userHistoryPending = () => ({
+  type: actionStrings.userHistory.concat("_", Pending),
+});
+
+const userHistoryRejected = (error) => ({
+  type: actionStrings.userHistory.concat("_", Rejected),
+  payload: { error },
+});
+
+const userHistoryFulfilled = (data) => ({
+  type: actionStrings.userHistory.concat("_", Fulfilled),
   payload: { data },
 });
 
@@ -118,6 +163,19 @@ const deleteImageFulfilled = (data) => ({
   payload: { data },
 });
 
+const getAllUserThunk = (token, link) => {
+  return async (dispatch) => {
+    try {
+      dispatch(userGetAllPending());
+      const result = await getAllUser(token, link);
+      console.log(result);
+      dispatch(userGetAllFulfilled(result.data));
+    } catch (error) {
+      dispatch(userGetAllRejected(error));
+    }
+  };
+};
+
 const getUserDetailThunk = (token, id) => {
   return async (dispatch) => {
     try {
@@ -127,6 +185,32 @@ const getUserDetailThunk = (token, id) => {
       dispatch(userDetailFulfilled(result.data));
     } catch (error) {
       dispatch(userDetailRejected(error));
+    }
+  };
+};
+
+const getUserExpenseThunk = (token, id) => {
+  return async (dispatch) => {
+    try {
+      dispatch(userExpensePending());
+      const result = await getExpense(token, id);
+      console.log(result);
+      dispatch(userExpenseFulfilled(result.data));
+    } catch (error) {
+      dispatch(userExpenseRejected(error));
+    }
+  };
+};
+
+const getUserHistoryThunk = (token, link) => {
+  return async (dispatch) => {
+    try {
+      dispatch(userHistoryPending());
+      const result = await getHistory(token, link);
+      console.log(result);
+      dispatch(userHistoryFulfilled(result.data));
+    } catch (error) {
+      dispatch(userHistoryRejected(error));
     }
   };
 };
@@ -218,7 +302,10 @@ const deleteImageThunk = (token, id, body) => {
 };
 
 const userAction = {
+  getAllUserThunk,
   getUserDetailThunk,
+  getUserExpenseThunk,
+  getUserHistoryThunk,
   checkPinThunk,
   editProfileThunk,
   editPhoneThunk,

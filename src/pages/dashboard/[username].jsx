@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "components/Header";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import Footer from "components/Footer";
 import css from "styles/Home.module.css";
-import user from "src/assets/1.png";
-import user2 from "src/assets/image.png";
+import user1 from "src/assets/1.png";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import userAction from "src/redux/actions/user";
+// import { createSearchParams, useSearchParams } from "react-router-dom";
 
 function Home({ children }) {
+  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
   const router = useRouter();
+  const dispatch = useDispatch();
+  // const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState({});
+
+  useEffect(() => {
+    if (auth.isFulfilled)
+      dispatch(
+        userAction.getUserExpenseThunk(auth.userData.token, auth.userData.id)
+      );
+    dispatch(
+      userAction.getUserHistoryThunk(
+        auth.userData.token,
+        `?page=1&limit=5&filter=MONTH`
+      )
+    );
+  }, [auth]);
+
   return (
     <>
       <Header title={"HOME"} />
@@ -24,8 +45,8 @@ function Home({ children }) {
               <div className={css["side-top"]}>
                 <div className={css["top-left"]}>
                   <p className={css.balance}>Balance</p>
-                  <p className={css.price}>Rp120.000</p>
-                  <p className={css.phone}>+62 813-9387-7946</p>
+                  <p className={css.price}>Rp. {user.profile.balance}</p>
+                  <p className={css.phone}>{user.profile.noTelp}</p>
                 </div>
                 <div className={`${css["top-btn"]} ${css.btnHide}`}>
                   <div className={css.btn}>
@@ -68,7 +89,7 @@ function Home({ children }) {
                           marginTop: "0.5rem",
                         }}
                       >
-                        Rp2.120.000
+                        Rp{user.dashboard.totalIncome}
                       </p>
                     </div>
                     <div>
@@ -88,7 +109,7 @@ function Home({ children }) {
                           marginTop: "0.5rem",
                         }}
                       >
-                        Rp1.560.000
+                        Rp{user.dashboard.totalExpense}
                       </p>
                     </div>
                   </div>
@@ -139,54 +160,36 @@ function Home({ children }) {
                       See all
                     </p>
                   </div>
-                  <div className={css["card"]}>
-                    <div className={css["image-name"]}>
-                      <Image src={user} alt="user" width={56} height={56} />
-                      <div>
-                        <p className={css["username"]}>Samuel Suhi</p>
-                        <p className={css.status}>Accept</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className={css.recive}>+Rp50.000</p>
-                    </div>
-                  </div>
-                  <div className={css["card"]}>
-                    <div className={css["image-name"]}>
-                      <Image src={user2} alt="user" width={56} height={56} />
-                      <div>
-                        <p className={css["username"]}>Samuel Suhi</p>
-                        <p className={css.status}>Transfer</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className={css.paid}>-Rp149.000</p>
-                    </div>
-                  </div>
-                  <div className={css["card"]}>
-                    <div className={css["image-name"]}>
-                      <Image src={user} alt="user" width={56} height={56} />
-                      <div>
-                        <p className={css["username"]}>Samuel Suhi</p>
-                        <p className={css.status}>Accept</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className={css.recive}>+Rp50.000</p>
-                    </div>
-                  </div>
-                  <div className={css["card"]}>
-                    <div className={css["image-name"]}>
-                      <Image src={user2} alt="user" width={56} height={56} />
-                      <div>
-                        <p className={css["username"]}>Samuel Suhi</p>
-                        <p className={css.status}>Transfer</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className={css.paid}>-Rp149.000</p>
-                    </div>
-                  </div>
+                  {user.history &&
+                    user.history.map((item) => {
+                      return (
+                        <div className={css["card"]}>
+                          <div className={css["image-name"]}>
+                            <Image
+                              src={user1}
+                              alt="user"
+                              width={56}
+                              height={56}
+                            />
+                            <div>
+                              <p className={css["username"]}>{item.fullName}</p>
+                              <p className={css.status}>{item.type}</p>
+                            </div>
+                          </div>
+                          <div>
+                            <p
+                              className={
+                                item.type === "accept" ? css.recive : css.paid
+                              }
+                            >
+                              {item.type === "accept"
+                                ? `+${item.amount}`
+                                : `-${item.amount}`}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             </aside>

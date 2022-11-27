@@ -3,7 +3,8 @@
   padding: 2rem 8rem;
   gap: 2rem;
   background-color: #e5e5e5;
-  height: 100vh;
+  min-height: 100vh;
+  position: relative;
 }
 
 .container p {
@@ -345,6 +346,25 @@
 
 .btn:active {
   background-color: #48507c;
+}
+
+.paginasi {
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 3rem;
+  right: 10rem;
+}
+
+.previous-button {
+  margin: 1rem;
+  width: 7rem;
+}
+
+.next-button {
+  margin: 1rem;
+  width: 7rem;
 }
 
 @media screen and (max-width: 768px) {
