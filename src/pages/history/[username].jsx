@@ -15,7 +15,7 @@ function Home() {
     <>
       <Header title={"HOME"} />
       <Navbar />
-      <div className={css.container}>
+      <section className={css.container}>
         <div className={`col-lg-3 ${css.onMobile}`}>
           <Sidebar />
         </div>
@@ -26,18 +26,13 @@ function Home() {
               <div
                 onClick={() => {
                   setFilter(filter ? false : true);
-                  console.log(filter);
                 }}
               >
                 -- Select Filter --
               </div>
               <div className={filter ? css.filterDownOn : css.filterDownOff}>
-                <p className={filter ? css.filterDownOn2 : css.filterDownOff}>
-                  Transfer In
-                </p>
-                <p className={filter ? css.filterDownOn2 : css.filterDownOff}>
-                  Transfer Out
-                </p>
+                <p className={css.filterDownOn2}>Send</p>
+                <p className={css.filterDownOn2}>Accept</p>
               </div>
             </div>
           </div>
@@ -98,7 +93,7 @@ function Home() {
             </div>
           )}
         </aside>
-      </div>
+      </section>
       <Footer />
     </>
   );

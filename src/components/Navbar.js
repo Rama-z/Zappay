@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import Image from "next/image";
 import profile from "src/assets/profile.png";
 import css from "src/styles/Navbar.module.css";
-import Sidebar from "components/sidebar";
+import Sidebar from "components/Sidebar";
+import { useRouter } from "next/router";
 
 function Navbar({ children }) {
   const [show, setShow] = useState(false);
-
+  const router = useRouter();
   const notifHandler = (e) => {
     e.preventDefault();
     setShow(!show);
@@ -23,7 +24,14 @@ function Navbar({ children }) {
           <div className={css["on-mobile"]} onClick={sidebarHandler}>
             <Sidebar />
           </div>
-          <p className={css.title}>FazzPay</p>
+          <p
+            className={css.title}
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            FazzPay
+          </p>
         </div>
         <div className={css["navbar-right"]}>
           <div className={css["mobile"]}>

@@ -5,7 +5,7 @@ import storage from "redux-persist/lib/storage";
 import reducers from "./reducers";
 
 const persistConfig = {
-  key: "z-wallet",
+  key: "zappay",
   storage,
 };
 

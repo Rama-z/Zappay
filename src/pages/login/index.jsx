@@ -1,28 +1,67 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "components/LayoutAuth";
 import PageTitle from "components/Header";
 import styles from "styles/Login.module.css";
+import authAction from "src/redux/actions/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import userAction from "src/redux/actions/user";
+import { useRouter } from "next/router";
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [emptyForm, setEmptyForm] = useState(true);
   const [unouthorized, setUnouthorized] = useState(false);
   const [body, setBody] = useState({});
-  //   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const router = useRouter();
+  console.log(auth.userData.pin);
 
   const checkEmptyForm = (body) => {
     if (!body.email || !body.password) return setEmptyForm(true);
     body.email && body.password && setEmptyForm(false);
   };
+
   const togglePassword = () => setShowPassword(!showPassword);
+
+  // const loginSuccess = () => {
+  //   if (!auth.userData.pin)
+  //     return toast.success(`Login Success! Please Create Your Pin`);
+  //   toast.success(`Login Success! welcome ${body.email}`);
+  // };
+  // const loginDenied = () => toast.error(`Login Failed: ${auth.error}`);
 
   const changeHandler = (e) =>
     setBody({ ...body, [e.target.name]: e.target.value });
 
+  const loginHandler = (e) => {
+    e.preventDefault();
+    dispatch(authAction.loginThunk(body));
+  };
+
   useEffect(() => {
     checkEmptyForm(body);
   }, [body]);
+
+  useEffect(() => {
+    if (auth.isLoading) setEmptyForm(true);
+    if (auth.isFulfilled) {
+      dispatch(
+        userAction.getUserDetailThunk(auth.userData.token, auth.userData.id)
+      );
+      if (!auth.userData.pin) {
+        toast.success(`Login Success! Please Create Your Pin`);
+        router.push("/createpin");
+      }
+      if (auth.userData.pin) {
+        toast.success(`Login Success! welcome ${body.email}`);
+        router.push("/dashboard/:id");
+      }
+    }
+  }, [auth]);
 
   return (
     <>
@@ -38,7 +77,7 @@ export default function Login() {
           wherever you are. Desktop, laptop, mobile phone? we cover all of that
           for you!
         </p>
-        <form className={styles["form"]}>
+        <form className={styles["form"]} onSubmit={loginHandler}>
           <div className={styles["email"]}>
             <i className="bi bi-envelope"></i>
             <input

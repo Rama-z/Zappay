@@ -67,8 +67,6 @@ function Home() {
               className={css.continue1}
               onClick={() => {
                 modalhandler();
-                console.log("asd");
-                console.log(modalOpen);
               }}
             >
               <button className={css.continue}>Continue</button>

@@ -22,34 +22,50 @@ import download from "src/assets/download.svg";
 import profile from "src/assets/profile.svg";
 import arrow_left from "src/assets/arrow-left.svg";
 import arrow_right from "src/assets/arrow-right.svg";
+import { useSelector } from "react-redux";
 
 export default function Home() {
+  const auth = useSelector((state) => state.auth);
   const router = useRouter();
 
   const handleLogin = () => {
-    console.log(">>>>>>>>>");
-    router.push("/auth/login");
+    router.push("/login");
   };
+
   const handleSignup = () => {
-    console.log(">>>>>>>>>");
-    router.push("/auth/signup");
+    router.push("/signup");
   };
+
   return (
     <div className={styles.container}>
       <Header title={"Landing Page"} />
-      <header className={`${styles.header} ${styles.flex}`}>
-        <sidebar className={styles.sidebar}>
-          <p className={styles.title}>FazzPay</p>
-        </sidebar>
-        <navbar className={`${styles.flex} ${styles.navbar}`}>
-          <Button text="Login" variant="login" onClick={() => handleLogin()} />
-          <Button
-            text="Sign Up"
-            variant="signup"
-            onClick={() => handleSignup()}
-          />
-        </navbar>
-      </header>
+      <section className={`${styles.header} ${styles.flex}`}>
+        <section className={styles.sidebar}>
+          <p className={styles.title}>Zappay</p>
+        </section>
+        {!auth.userData.pin ? (
+          <section className={`${styles.flex} ${styles.navbar}`}>
+            <Button
+              text="Login"
+              variant="login"
+              onClick={() => handleLogin()}
+            />
+            <Button
+              text="Sign Up"
+              variant="signup"
+              onClick={() => handleSignup()}
+            />
+          </section>
+        ) : (
+          <section className={`${styles.flex} ${styles.navbar}`}>
+            <Button
+              text="Dashboard"
+              variant="login"
+              onClick={() => router.push("/dashboard/:username")}
+            />
+          </section>
+        )}
+      </section>
       <main className={styles.main}>
         <section className={`${styles["section-1"]} ${styles.flex}`}>
           <aside className={`${styles.aside}`}>

@@ -149,6 +149,21 @@
   position: relative;
 }
 
+.text {
+  text-align: center;
+  font-family: "Nunito sans", sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  margin: 3rem 0rem;
+}
+
+.tombol {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 3rem;
+}
+
 @media (max-width: 576px) {
   .main-container {
     flex-direction: column;

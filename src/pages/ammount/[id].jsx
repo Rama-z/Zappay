@@ -50,7 +50,7 @@ function Home() {
             </div>
             <div className={css.availability}>Rp120.000 Available</div>
             <div className={css["input-transfer2"]}>
-              <Image className={css["image-pen"]} src={pen} />
+              <Image className={css["image-pen"]} src={pen} alt="pen" />
               <input
                 className={css.notes}
                 type="text"

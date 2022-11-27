@@ -1,6 +1,11 @@
 import { useRouter } from "next/router";
 import React, { use, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Styles from "styles/Sidebar.module.css";
+import authAction from "src/redux/actions/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ModalLogout from "./ModalLogout";
 
 function Sidebar() {
   const [selectDashboard, setDashboard] = useState(false);
@@ -9,15 +14,21 @@ function Sidebar() {
   const [selectProfile, setProfile] = useState(false);
   const router = useRouter();
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(router.pathname.includes("history"));
     if (
       router.pathname.includes("transfer") ||
       router.pathname.includes("ammount") ||
       router.pathname.includes("confirmation")
     )
       return setTransfer(true);
-    if (router.pathname.includes("home")) return setDashboard(true);
+    if (
+      router.pathname.includes("dashboard") ||
+      router.pathname.includes("history")
+    )
+      return setDashboard(true);
     if (router.pathname.includes("profile")) return setProfile(true);
   }, []);
 
@@ -27,7 +38,7 @@ function Sidebar() {
     setTransfer(false);
     setTopUp(false);
     setProfile(false);
-    router.push("/home/:username");
+    router.push("/dashboard/:username");
   };
   const transferHandler = (e) => {
     e.preventDefault();
@@ -56,6 +67,9 @@ function Sidebar() {
   const toggleHandler = () => {
     setShow(!show);
   };
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalhandler = () => setModalOpen(!modalOpen);
 
   return (
     <>
@@ -205,9 +219,17 @@ function Sidebar() {
         </div>
         <div className={Styles.logout}>
           <i className="fa-solid fa-arrow-right-from-bracket"></i>
-          <p className={Styles["close"]}>Logout</p>
+          <p
+            className={Styles["close"]}
+            onClick={() => {
+              modalhandler();
+            }}
+          >
+            Logout
+          </p>
         </div>
       </div>
+      <ModalLogout open={modalOpen} setOpen={setModalOpen} />
     </>
   );
 }
