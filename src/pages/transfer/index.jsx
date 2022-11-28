@@ -21,8 +21,8 @@ function Home() {
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
   const token = auth.userData.token;
-  const link = process.env.CLOUDINARY_LINK;
-  // const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+  // const link = process.env.CLOUDINARY_LINK;
+  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
   const [page, setPage] = useState(1);
   const [searchs, setSearchs] = useState("");
   const dispatch = useDispatch();

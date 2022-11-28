@@ -304,8 +304,6 @@ function Sidebar() {
                 Enter the amount of money, and click submit
               </p>
               <div className={Styles["input-topup"]}>
-                <p>RP</p>
-                <div className={Styles.line}></div>
                 <input name="amount" onChange={amountHandler}></input>
               </div>
               {errMsg && (

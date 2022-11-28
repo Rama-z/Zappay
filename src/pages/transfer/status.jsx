@@ -9,9 +9,23 @@ import Footer from "components/Footer";
 import { useRouter } from "next/router";
 import success from "src/assets/success.png";
 import failed from "src/assets/failed.png";
+import { useSelector } from "react-redux";
+import sample from "src/assets/avatar.webp";
 
 function Status() {
   const router = useRouter();
+  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
+  const transfer = useSelector((state) => state.transfer);
+  const newDate = new Date();
+  const month = newDate.toLocaleString("en-US", { month: "long" });
+  const year = newDate.getFullYear();
+  const date = newDate.getDate();
+  const hour = newDate.getHours();
+  const minute = newDate.getMinutes();
+  // const link = process.env.CLOUDINARY_LINK;
+  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+
   return (
     <>
       <Header title={"Status"} />
@@ -22,43 +36,42 @@ function Status() {
           </div>
           <div className={`col-lg-9 ${styles["status-info"]}`}>
             <div className={styles.status}>
-              {/* {props.transferResult.status &&
-              props.transferResult.status === 200 ? (
-                <i className={`bi bi-check-lg`}></i>
-              ) : (
-                <i className={`bi bi-x-lg`}></i>
-              )} */}
+              <div className={styles["contact-item"]}>
+                <div className={styles["img"]}>
+                  <Image
+                    src={success}
+                    placeholder={"empty"}
+                    alt="profile"
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
+              </div>
             </div>
             <p className={styles["status-text"]}>
-              {/* {props.transferResult.msg || ""} */}
+              {transfer.isFulfilled ? "Transfer Success" : "Transfer Failed"}
             </p>
             <div className={styles["info"]}>
               <div className={styles["item-container"]}>
                 <p className={styles["info-label"]}>Amount</p>
                 <p className={styles["info-value"]}>
-                  {/* {`Rp. ${
-                    currencyPeriod(props.transferResult.data.amount) || ""
-                  }`} */}
+                  {transfer.transferData.amount}
                 </p>
               </div>
               <div className={styles["item-container"]}>
                 <p className={styles["info-label"]}>Balance Left</p>
-                <p className={styles["info-value"]}>
-                  {/* {`Rp. ${
-                    currencyPeriod(props.transferResult.data.balance) || ""
-                  }`} */}
-                </p>
+                <p className={styles["info-value"]}>{user.profile.balance}</p>
               </div>
               <div className={styles["item-container"]}>
                 <p className={styles["info-label"]}>Date & Time</p>
                 <p className={styles["info-value"]}>
-                  {/* {Date(props.transferData.date) || ""} */}
+                  {month} {date}, {year} - {hour}.{minute}
                 </p>
               </div>
               <div className={styles["item-container"]}>
                 <p className={styles["info-label"]}>Notes</p>
                 <p className={styles["info-value"]}>
-                  {/* {props.transferResult.data.notes || "-"} */}
+                  {transfer.transferData.notes}
                 </p>
               </div>
             </div>
@@ -67,7 +80,11 @@ function Status() {
               <div className={styles["contact-item"]}>
                 <div className={styles["img"]}>
                   <Image
-                    src={profile}
+                    src={
+                      user.profileTarget.image
+                        ? `${link}/${user.profileTarget.image}`
+                        : sample
+                    }
                     placeholder={"empty"}
                     alt="profile"
                     layout="fill"
@@ -76,13 +93,9 @@ function Status() {
                 </div>
                 <div className={styles["name-phone"]}>
                   <p className={styles["name"]}>
-                    Putra Ganteng
-                    {/* {`${props.transferData.receiverData.firstName} ${props.transferData.receiverData.lastName}`} */}
+                    {user.profileTarget.firstName} {user.profileTarget.lastName}
                   </p>
-                  <p className={styles["phone"]}>
-                    0800-0800-0800
-                    {/* {props.transferData.receiverData.noTelp | "-"} */}
-                  </p>
+                  <p className={styles["phone"]}>{user.profileTarget.noTelp}</p>
                 </div>
               </div>
             </section>
@@ -99,7 +112,7 @@ function Status() {
               <button
                 className={`btn btn-primary ${styles["home"]}`}
                 onClick={() => {
-                  router.push("/home/test");
+                  router.push(`/dashboard/${user.profile.firstName}`);
                 }}
               >
                 Back to Home

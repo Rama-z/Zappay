@@ -21,7 +21,7 @@ const ModalConfirm = ({ open, setOpen }) => {
   };
   const transferHandler = () => {
     dispatch(
-      transferDataActions.transferDuitThunk(
+      transferDataActions.transferThunk(
         auth.userData.token,
         {
           receiverId: transfer.transferData.receiverId,
@@ -57,7 +57,7 @@ const ModalConfirm = ({ open, setOpen }) => {
   useEffect(() => {
     if (transfer.isLoading) setBtn(true);
     if (!transfer.isLoading) setBtn(false);
-    if (user.pinWorng) setErrpin("Pin Worng !");
+    // if (user.pinWorng) setErrpin("Pin Worng !");
     // if (users.isFulfilled) {
     // const sendData = {
     //   receiverId: transaction.transfer.receiverId,

@@ -46,7 +46,7 @@ function Home() {
                 <Image
                   src={
                     user.profileTarget.image
-                      ? `${link}${user.profileTarget.image}`
+                      ? `${link}/${user.profileTarget.image}`
                       : sample
                   }
                   alt="user"

@@ -216,7 +216,7 @@ button.confirm {
 
 /* status */
 .main-status {
-  background-color: #FAFCFF;
+  background-color: #fafcff;
   display: flex;
   /* flex-direction: column; */
   grid-gap: 1rem;
@@ -230,9 +230,9 @@ button.confirm {
 
 .status-info {
   background-color: white;
-  box-shadow: 0px 4px 20px 0px #0000000D;
+  box-shadow: 0px 4px 20px 0px #0000000d;
   border-radius: 25px;
-  padding: 0 1.5rem 2rem;
+  padding: 3rem 1.5rem 2rem;
   display: flex;
   flex-direction: column;
   grid-gap: 10px;
@@ -274,6 +274,7 @@ button.confirm {
 
 .receiver {
   width: 100%;
+  margin-top: 2rem;
 }
 
 .buttons {
@@ -286,7 +287,7 @@ button.confirm {
 }
 
 .download .icon-fontawesome {
-  padding-right: .8rem;
+  padding-right: 0.8rem;
 }
 
 .buttons button {

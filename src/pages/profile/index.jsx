@@ -42,17 +42,6 @@ function Profile() {
     router.push("/profile/change-pin");
   };
 
-  // const handleModal = () => setOpenModal(!openModal);
-
-  // const logoutHandler = () => {
-  //   dispatch(
-  //     authAction.logoutThunk(() => {
-  //       toast.success(`${logoutMsg}`);
-  //       router.push("/login");
-  //     })
-  //   );
-  // };
-
   const editImageHandler = (e) => {
     const body = new FormData();
     body.append("image", e.target.files[0]);
@@ -71,80 +60,76 @@ function Profile() {
   return (
     <>
       <Header title={"HOME"} />
-      <main className={css["container"]}>
-        <div className="container">
-          <div className={`row ${css["main-content"]}`}>
-            <div className="col-lg-3 col-md-4">
-              <Sidebar />
-            </div>
-            <div className="col-lg-9 col-md-8 col-12">
-              <div className={css["profile-content"]}>
-                <div className={css["profile-detail"]}>
-                  <div className={css["top-content"]}>
-                    <div className={css["photo"]}>
-                      <Image
-                        alt="profile"
-                        src={
-                          !profile.image ? sample : `${link}/${profile.image}`
-                        }
-                        placeholder="blur"
-                        blurDataURL={"./assets/avatar.jpg"}
-                        onError={() => "./assets/avatar.jpg"}
-                        layout="fill"
-                        objectFit="cover"
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      name="image"
-                      hidden={true}
-                      ref={inputFileRef}
-                      onChange={(e) => {
-                        editImageHandler(e);
-                      }}
+      <main className={`${css.container}`}>
+        <div className={`col-lg-3 ${css.onMobile}`}>
+          <Sidebar />
+        </div>
+        <aside className={`${css["bottom-right"]} ${css.side}`}>
+          <div className={`${css["main-content"]}`}>
+            <div className={css["profile-content"]}>
+              <div className={css["profile-detail"]}>
+                <div className={css["top-content"]}>
+                  <div className={css["photo"]}>
+                    <Image
+                      alt="profile"
+                      src={!profile.image ? sample : `${link}/${profile.image}`}
+                      placeholder="blur"
+                      blurDataURL={"./assets/avatar.jpg"}
+                      onError={() => "./assets/avatar.jpg"}
+                      layout="fill"
+                      objectFit="cover"
                     />
-                    <div className={css["name-phone"]}>
-                      <div className={css["edit"]} onClick={inputImage}>
-                        <i className="fa-solid fa-pen"></i>
-                        <p>Edit</p>
-                      </div>
-                      <div className={css["name"]}>
-                        <p>{`${profile.firstName} ${profile.lastName}`}</p>
-                      </div>
-                      <div className={css["phone"]}>
-                        <p>
-                          {!profile.noTelp
-                            ? "+62-xx-xxxx-xxxx"
-                            : `+62${profile.noTelp}`}
-                        </p>
-                      </div>
+                  </div>
+                  <input
+                    type="file"
+                    name="image"
+                    hidden={true}
+                    ref={inputFileRef}
+                    onChange={(e) => {
+                      editImageHandler(e);
+                    }}
+                  />
+                  <div className={css["name-phone"]}>
+                    <div className={css["edit"]} onClick={inputImage}>
+                      <i className="fa-solid fa-pen"></i>
+                      <p>Edit</p>
+                    </div>
+                    <div className={css["name"]}>
+                      <p>{`${profile.firstName} ${profile.lastName}`}</p>
+                    </div>
+                    <div className={css["phone"]}>
+                      <p>
+                        {!profile.noTelp
+                          ? "+62-xx-xxxx-xxxx"
+                          : `+62${profile.noTelp}`}
+                      </p>
                     </div>
                   </div>
-                  <div className={css["profile-btn"]}>
-                    <button onClick={toInfo}>
-                      <p>Personal Information</p>
-                      <span>
-                        <i className="fa-solid fa-arrow-right"></i>
-                      </span>
-                    </button>
-                    <button onClick={toChangePwd}>
-                      <p>Change Password</p>
-                      <span>
-                        <i className="fa-solid fa-arrow-right"></i>
-                      </span>
-                    </button>
-                    <button onClick={toChangePin}>
-                      <p>Change PIN</p>
-                      <span>
-                        <i className="fa-solid fa-arrow-right"></i>
-                      </span>
-                    </button>
-                  </div>
+                </div>
+                <div className={css["profile-btn"]}>
+                  <button onClick={toInfo}>
+                    <p>Personal Information</p>
+                    <span>
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </span>
+                  </button>
+                  <button onClick={toChangePwd}>
+                    <p>Change Password</p>
+                    <span>
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </span>
+                  </button>
+                  <button onClick={toChangePin}>
+                    <p>Change PIN</p>
+                    <span>
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </aside>
       </main>
       <Footer />
     </>

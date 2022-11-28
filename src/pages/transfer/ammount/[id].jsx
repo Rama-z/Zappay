@@ -18,6 +18,7 @@ import transferDataActions from "src/redux/actions/transfer";
 function Home() {
   const router = useRouter();
   const user = useSelector((state) => state.user);
+  console.log(user.profileTarget.image);
   const auth = useSelector((state) => state.auth);
   // const link = process.env.CLOUDINARY_LINK;
   const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
@@ -58,7 +59,7 @@ function Home() {
                 <Image
                   src={
                     user.profileTarget.image
-                      ? `${link}${user.profileTarget.image}`
+                      ? `${link}/${user.profileTarget.image}`
                       : sample
                   }
                   alt="user"
@@ -110,7 +111,7 @@ function Home() {
                   type="submit"
                   className={css.continue}
                   onClick={() => {
-                    router.push(`/confirmation/${router.query.id}`);
+                    router.push(`/transfer/confirmation/${router.query.id}`);
                   }}
                 >
                   Continue
