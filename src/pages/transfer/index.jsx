@@ -87,7 +87,7 @@ function Home() {
           {user.allData ? (
             user.allData.map((item, idx) => {
               return (
-                <div className={css.conimage}>
+                <div className={css.conimage} key={idx}>
                   <div
                     className={css["card"]}
                     onClick={() => {
