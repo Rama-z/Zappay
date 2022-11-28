@@ -84,11 +84,11 @@ You may also see any lint errors in the console.
 ## Screenshots
 
 <div align="center">
-<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/ss1.png" alt="Landing page">
+<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/landingpage.png" alt="Landing page">
 
-<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/ss2.png" alt="Login page">
+<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/login.png" alt="Login page">
 
-<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/ss3.png" alt="Dashboard">
+<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/dashboard.png" alt="Dashboard">
 
-<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/ss4.png" alt="Transfer history">
+<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/history.png" alt="Transfer history">
 </div>
