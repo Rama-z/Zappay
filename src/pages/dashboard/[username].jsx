@@ -15,8 +15,7 @@ function Home({ children }) {
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
   const router = useRouter();
-  // const link = process.env.CLOUDINARY_LINK
-  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+  const link = process.env.NEXT_PUBLIC_CLOUDINARY_LINK;
   const dispatch = useDispatch();
   // const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState({});

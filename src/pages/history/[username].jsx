@@ -17,8 +17,7 @@ function Home() {
   const user = useSelector((state) => state.user);
   const [filtering, setFiltering] = useState(user.history);
   const [page, setPage] = useState(1);
-  // const link = process.env.CLOUDINARY_LINK
-  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+  const link = process.env.NEXT_PUBLIC_CLOUDINARY_LINK;
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();

@@ -23,8 +23,7 @@ function Status() {
   const date = newDate.getDate();
   const hour = newDate.getHours();
   const minute = newDate.getMinutes();
-  // const link = process.env.CLOUDINARY_LINK;
-  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+  const link = process.env.NEXT_PUBLIC_CLOUDINARY_LINK;
 
   return (
     <>

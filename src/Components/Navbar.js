@@ -11,8 +11,7 @@ function Navbar({ children }) {
   const [show, setShow] = useState(false);
   const router = useRouter();
   const user = useSelector((state) => state.user);
-  // const link = process.env.CLOUDINARY_LINK;
-  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+  const link = process.env.NEXT_PUBLIC_CLOUDINARY_LINK;
 
   const notifHandler = (e) => {
     e.preventDefault();

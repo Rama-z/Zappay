@@ -20,8 +20,7 @@ function Profile() {
   const [openModal, setOpenModal] = useState(false);
   const auth = useSelector((state) => state.auth);
   const profile = useSelector((state) => state.user.profile);
-  // const link = process.env.CLOUDINARY_LINK;
-  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+  const link = process.env.NEXT_PUBLIC_CLOUDINARY_LINK;
   const inputFileRef = React.createRef();
   const [modalOpen, setModalOpen] = useState(false);
   const modalhandler = () => setModalOpen(!modalOpen);

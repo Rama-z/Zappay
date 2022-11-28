@@ -20,8 +20,7 @@ function Home() {
   const user = useSelector((state) => state.user);
   console.log(user.profileTarget.image);
   const auth = useSelector((state) => state.auth);
-  // const link = process.env.CLOUDINARY_LINK;
-  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+  const link = process.env.NEXT_PUBLIC_CLOUDINARY_LINK;
   const [body, setBody] = useState({});
   console.log(body);
   const [filter, setFilter] = useState(false);
