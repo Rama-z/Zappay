@@ -35,7 +35,7 @@ function Home({ children }) {
     dispatch(
       userAction.getUserDetailThunk(auth.userData.token, auth.userData.id)
     );
-  }, [auth]);
+  }, [auth, dispatch]);
 
   return (
     <>
@@ -166,9 +166,9 @@ function Home({ children }) {
                     </p>
                   </div>
                   {user.history &&
-                    user.history.map((item) => {
+                    user.history.map((item, idx) => {
                       return (
-                        <div className={css["card"]}>
+                        <div className={css["card"]} key={idx}>
                           <div className={css["image-name"]}>
                             <Image
                               src={item.image ? `${link}/${item.image}` : user1}

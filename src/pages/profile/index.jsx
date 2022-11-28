@@ -55,7 +55,7 @@ function Profile() {
     dispatch(
       userAction.getUserDetailThunk(auth.userData.token, auth.userData.id)
     );
-  }, [auth]);
+  }, [auth, dispatch]);
 
   return (
     <>

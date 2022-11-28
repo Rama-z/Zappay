@@ -37,7 +37,7 @@ function Sidebar() {
     )
       return setDashboard(true);
     if (router.pathname.includes("profile")) return setProfile(true);
-  }, []);
+  }, [router]);
 
   const dashboardHandler = (e) => {
     e.preventDefault();

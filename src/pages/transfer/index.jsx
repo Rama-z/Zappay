@@ -35,7 +35,7 @@ function Home() {
         `?page=${page}&limit=5&search=${router.query.querys}`
       )
     );
-  }, [auth, page, router.query]);
+  }, [auth, page, router.query, dispatch]);
 
   useEffect(() => {
     router.query.querys
@@ -53,7 +53,7 @@ function Home() {
           })
           .catch((err) => console.log(err));
     dispatch(transferDataActions.transferReset());
-  }, [router.query]);
+  }, [router.query, dispatch, page, token]);
 
   return (
     <>

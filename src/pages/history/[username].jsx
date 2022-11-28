@@ -30,7 +30,7 @@ function Home() {
         `?page=${page}&limit=5&filter=MONTH`
       )
     );
-  }, [auth, page]);
+  }, [auth, page, dispatch]);
   return (
     <>
       <Header title={"HOME"} />
@@ -75,9 +75,10 @@ function Home() {
           {!user.isLoading ? (
             <div>
               {user.history &&
-                user.history.map((item) => {
+                user.history.map((item, idx) => {
                   return (
                     <div
+                      key={idx}
                       className={css["card"]}
                       onClick={() => {
                         router.push(`/ammount/${item.id}`);

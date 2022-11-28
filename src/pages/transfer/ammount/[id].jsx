@@ -39,7 +39,7 @@ function Home() {
     dispatch(
       userAction.getUserDetail2Thunk(auth.userData.token, router.query.id)
     );
-  }, [auth]);
+  }, [auth, dispatch, router.query.id]);
 
   return (
     <>

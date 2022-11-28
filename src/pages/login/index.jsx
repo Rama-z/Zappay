@@ -54,7 +54,7 @@ export default function Login() {
         router.push(`/dashboard/${user.profile.firstName}`);
       }
     }
-  }, [auth]);
+  }, [auth, body.email, dispatch, router, user.profile.firstName]);
 
   useEffect(() => {
     if (auth.isError) {

@@ -49,7 +49,13 @@ function Detail() {
     dispatch(userAction.getUserDetailThunk(userData.token, userData.id));
     setFirstName(profile.firstName);
     setLastName(profile.lastName);
-  }, [dispatch]);
+  }, [
+    dispatch,
+    profile.firstName,
+    profile.lastName,
+    userData.token,
+    userData.id,
+  ]);
 
   return (
     <>
