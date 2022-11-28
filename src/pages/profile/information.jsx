@@ -1,21 +1,60 @@
-import React from "react";
-import Header from "components/Navbar";
-import Footer from "components/Footer";
-import Sidebar from "components/Sidebar";
+import React, { useEffect, useState } from "react";
+import Footer from "src/Components/Footer";
+import Sidebar from "src/Components/Sidebar";
 import css from "styles/ProfileInfo.module.css";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import userAction from "src/redux/actions/user";
+import PageTitle from "src/Components/PageTitle";
+import Navbar from "src/Components/Navbar";
 
-function Information() {
+function Detail() {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const [edit, setEdit] = useState(true);
   const profile = useSelector((state) => state.user.profile);
+  const userData = useSelector((state) => state.auth.userData);
+  const [firstName, setFirstName] = useState(profile.firstName);
+  const [lastName, setLastName] = useState(profile.lastName);
 
   const toEditPhone = () => {
     router.push("/profile/edit-phone");
   };
+
+  const isEditName = () => {
+    setEdit(!edit);
+  };
+
+  const changeHandler = (e) => {
+    setBody({ ...body, [e.target.name]: e.target.value });
+    if (e.target.value) setValue(true);
+    else setValue(false);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    const body = {
+      firstName: firstName,
+      lastName: lastName,
+    };
+    console.log(body);
+    dispatch(userAction.editProfileThunk(userData.token, userData.id, body));
+
+    router.push("/profile");
+  };
+
+  useEffect(() => {
+    dispatch(userAction.getUserDetailThunk(userData.token, userData.id));
+    setFirstName(profile.firstName);
+    setLastName(profile.lastName);
+  }, [dispatch]);
+
   return (
     <>
-      <Header />
+      <PageTitle title="Profile Detail" />
+      <Navbar />
       <main className={css["container"]}>
         <div className="container">
           <div className={`row ${css["main-content"]}`}>
@@ -34,24 +73,44 @@ function Information() {
                     support.
                   </p>
                 </div>
-                <div className={css["edit-btn"]}>
+                <div
+                  className={css["edit-btn"]}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    isEditName();
+                  }}
+                >
                   <p>Edit</p>
                 </div>
-                <form action="">
+                <form action="" onSubmit={submitHandler}>
                   <div className={css["input-bar"]}>
                     <label htmlFor="">First Name</label>
                     <input
+                      className={css["name"]}
                       type="text"
-                      value={profile.firstName}
+                      name="firstName"
+                      value={firstName === null ? "Input Here..." : firstName}
+                      disabled={edit}
                       placeholder="Input Here..."
+                      onChange={(e) => {
+                        setFirstName(e.target.value);
+                        console.log(firstName);
+                      }}
                     />
                   </div>
                   <div className={css["input-bar"]}>
                     <label htmlFor="">Last Name</label>
                     <input
+                      className={css["name"]}
                       type="text"
-                      value={profile.lastName}
+                      name="lastName"
+                      disabled={edit}
+                      value={lastName === null ? "Input Here..." : lastName}
                       placeholder="Input Here..."
+                      onChange={(e) => {
+                        setLastName(e.target.value);
+                        console.log(lastName);
+                      }}
                     />
                   </div>
                   <div className={css["input-bar"]}>
@@ -79,6 +138,11 @@ function Information() {
                       <p onClick={toEditPhone}>Manage</p>
                     </div>
                   </div>
+                  {!edit && (
+                    <div className={css["save-btn"]}>
+                      <button type="submit">Save Change</button>
+                    </div>
+                  )}
                 </form>
               </div>
             </div>
@@ -90,4 +154,4 @@ function Information() {
   );
 }
 
-export default Information;
+export default Detail;

@@ -49,6 +49,8 @@
 
 .profile-info form .save-btn {
   padding-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .profile-info form .save-btn button {
@@ -56,7 +58,7 @@
   background-color: #6379f4;
   color: white;
   padding: 0.5rem 1rem;
-  width: 100%;
+  width: 20%;
   border-radius: 1rem;
 }
 

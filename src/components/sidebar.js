@@ -53,7 +53,7 @@ function Sidebar() {
     setTransfer(true);
     setTopUp(false);
     setProfile(false);
-    router.push(`/transfer`);
+    router.push(`/transfer?querys=`);
   };
   const topupHandler = (e) => {
     e.preventDefault();

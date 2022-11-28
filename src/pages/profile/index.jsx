@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Header from "components/Navbar";
-import Sidebar from "components/Sidebar";
-import Footer from "components/Footer";
+import Header from "src/Components/Navbar";
+import Sidebar from "src/Components/Sidebar";
+import Footer from "src/Components/Footer";
 import css from "styles/Profile.module.css";
 import Image from "next/image";
-import ModalLogout from "src/components/ModalLogout";
+import ModalLogout from "src/Components/ModalLogout";
 
 import sample from "../../assets/avatar.webp";
 import { useRouter } from "next/router";

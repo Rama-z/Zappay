@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Header from "components/Header";
-import Navbar from "components/Navbar";
-import Sidebar from "components/Sidebar";
-import Footer from "components/Footer";
+import Header from "src/Components/Header";
+import Navbar from "src/Components/Navbar";
+import Sidebar from "src/Components/Sidebar";
+import Footer from "src/Components/Footer";
 import css from "styles/History.module.css";
 import user1 from "src/assets/1.png";
 import { useDispatch, useSelector } from "react-redux";
 import userAction from "src/redux/actions/user";
-import Loading from "src/components/Loading";
+import Loading from "src/Components/Loading";
 import { useRouter } from "next/router";
 
 function Home() {

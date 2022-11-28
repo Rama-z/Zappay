@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import Header from "components/Header";
-import Navbar from "components/Navbar";
-import Sidebar from "components/Sidebar";
-import Footer from "components/Footer";
+import Header from "src/Components/Header";
+import Navbar from "src/Components/Navbar";
+import Sidebar from "src/Components/Sidebar";
+import Footer from "src/Components/Footer";
 import css from "styles/Confirmation.module.css";
 import user from "src/assets/1.png";
 import { useRouter } from "next/router";
 // import { toast } from "react-toastify";
-import Modal from "src/components/ModalConfirm";
+import Modal from "src/Components/ModalConfirm";
 import { useSelector } from "react-redux";
 import sample from "src/assets/avatar.webp";
 

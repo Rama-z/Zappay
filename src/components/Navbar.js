@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import profile from "src/assets/profile.png";
 import css from "src/styles/Navbar.module.css";
-import Sidebar from "components/Sidebar";
+import Sidebar from "src/Components/Sidebar";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import sample from "src/assets/avatar.webp";
@@ -37,7 +37,7 @@ function Navbar({ children }) {
               router.push("/");
             }}
           >
-            FazzPay
+            Zappay
           </p>
         </div>
         <div className={css["navbar-right"]}>
