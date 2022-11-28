@@ -1,11 +1,5 @@
 import { ActionType } from "redux-promise-middleware";
-import {
-  login,
-  logout,
-  register,
-  forgotPassword,
-  resetPassword,
-} from "src/modules/api/Auth";
+import { login, logout, register, forgot, reset } from "src/modules/api/Auth";
 import { actionStrings } from "./actionStrings";
 
 const { Pending, Rejected, Fulfilled } = ActionType;
@@ -112,7 +106,7 @@ const forgotThunk = (body, cbSuccess, cbDenied) => {
   return async (dispatch) => {
     try {
       dispatch(forgotPending());
-      const result = await forgotPassword(body);
+      const result = await forgot(body);
       dispatch(forgotFulfilled(result.data));
       typeof cbSuccess === "function" && cbSuccess();
     } catch (error) {
@@ -126,7 +120,7 @@ const resetThunk = (body, cbSuccess, cbDenied) => {
   return async (dispatch) => {
     try {
       dispatch(resetPending());
-      const result = await resetPassword(body);
+      const result = await reset(body);
       dispatch(resetFulfilled(result.data));
       typeof cbSuccess === "function" && cbSuccess();
     } catch (error) {

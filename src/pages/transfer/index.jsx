@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import userAction from "src/redux/actions/user";
 import icon from "src/assets/search.png";
 import sample from "src/assets/avatar.webp";
+import { getAllUser } from "src/modules/api/User";
+import transferDataActions from "src/redux/actions/transfer";
 
 // const ReactCodeInput = dynamic(import("react-code-input"));
 
@@ -18,19 +20,12 @@ function Home() {
   const [filter, setFilter] = useState(false);
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
-  // const link = process.env.CLOUDINARY_LINK;
-  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+  const token = auth.userData.token;
+  const link = process.env.CLOUDINARY_LINK;
+  // const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
   const [page, setPage] = useState(1);
   const [searchs, setSearchs] = useState("");
   const dispatch = useDispatch();
-
-  // const searchHandler = (e) => {
-  //   setSearchs(`${e}`);
-  // };
-
-  // useEffect(() => {
-  //   searchHandler();
-  // });
 
   useEffect(() => {
     dispatch(
@@ -40,6 +35,24 @@ function Home() {
       )
     );
   }, [auth, page]);
+
+  useEffect(() => {
+    router.query.querys
+      ? getAllUser(token, page, router.query.querys)
+          .then((res) => {
+            setUserData(res.data.data);
+
+            setPaginationData(res.data.pagination);
+          })
+          .catch((err) => console.log(err))
+      : getAllUser(token, page)
+          .then((res) => {
+            setUserData(res.data.data);
+            setPaginationData(res.data.pagination);
+          })
+          .catch((err) => console.log(err));
+    dispatch(transferDataActions.transferReset());
+  }, [router.query]);
 
   return (
     <>
@@ -56,7 +69,7 @@ function Home() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              router.push(`/transfer?q=${e.target.q.value}`);
+              router.push(`/transfer?q=${e.target.querys.value}`);
             }}
           >
             <div className={css.searchs}>
@@ -64,7 +77,8 @@ function Home() {
               <input
                 type="text"
                 className={css.searchInput}
-                // onChange={searchHandler}
+                name="querys"
+                defaultValue={router.query.querys || null}
                 placeholder="Search receiver here"
               />
             </div>

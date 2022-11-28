@@ -17,6 +17,7 @@ export const actionStrings = {
   userEditPassword: "USER_EDIT_PASSWORD",
   userDeleteImage: "USER_DELETE_IMAGE",
   transferData: "TRANSFER_DATA",
-  transferDuit: "TRANSFER_DUIT",
+  transfer: "TRANSFER",
   checkPin: "CHECK_PIN_USER",
+  resetTransfer: "TRANSFER_RESET",
 };

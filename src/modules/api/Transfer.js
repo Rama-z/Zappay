@@ -10,5 +10,5 @@ const config = (token) => {
   };
 };
 
-export const transferDuit = (token, body) =>
+export const transfer = (token, body) =>
   axios.post(`${baseUrl}/transfer`, body, config(token));

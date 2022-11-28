@@ -1,11 +1,26 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Layout from "components/LayoutAuth";
-import PageTitle from "components/Header";
-import styles from "styles/Forgot.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import Layout from "src/components/LayoutAuth";
+import PageTitle from "src/components/PageTitle";
+import styles from "src/styles/Forgot.module.css";
+import authAction from "src/redux/actions/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Forgot() {
-  const [body, setBody] = useState({});
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const auth = useSelector((state) => state.auth);
+  const [body, setBody] = useState({
+    linkDirect: "http://localhost:3000/forgot/",
+  });
+
+  const forgotSuccess = () => {
+    toast.success("Please check your email to reset your password");
+  };
+  const forgotDenied = () => toast.error(`${auth.error}`);
   const [emptyForm, setEmptyForm] = useState(true);
   const changeHandler = (e) =>
     setBody({ ...body, [e.target.name]: e.target.value });
@@ -15,9 +30,18 @@ export default function Forgot() {
     body.email && setEmptyForm(false);
   };
 
+  const forgotHandler = (e) => {
+    e.preventDefault();
+    dispatch(authAction.forgotThunk(body, forgotSuccess, forgotDenied));
+  };
+
   useEffect(() => {
     checkEmptyForm(body);
   }, [body]);
+
+  useEffect(() => {
+    if (auth.isLoading) setEmptyForm(true);
+  }, [auth]);
 
   return (
     <>
@@ -33,7 +57,7 @@ export default function Forgot() {
           link to your email and you will be directed to the reset password
           screens.
         </p>
-        <form className={styles["form"]}>
+        <form onSubmit={forgotHandler} className={styles["form"]}>
           <div className={styles["email"]}>
             <i className="bi bi-envelope"></i>
             <input

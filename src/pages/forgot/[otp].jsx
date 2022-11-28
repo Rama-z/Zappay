@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Layout from "components/LayoutAuth";
-import PageTitle from "components/Header";
-import styles from "styles/ResetPassword.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import Layout from "src/components/LayoutAuth";
+import PageTitle from "src/components/PageTitle";
+import styles from "src/styles/ResetPassword.module.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import authAction from "src/redux/actions/auth";
 
 export default function ResetPassword() {
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -11,28 +15,45 @@ export default function ResetPassword() {
   const [notSimiliar, setNotSimilar] = useState(false);
   const [emptyForm, setEmptyForm] = useState(true);
   const [body, setBody] = useState({});
-
+  const auth = useSelector((state) => state.auth);
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const toogleNewPassowrd = () => setShowNewPassword(!showNewPassword);
   const toggleConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
 
   const changeHandler = (e) =>
-    setBody({ ...body, [e.target.name]: e.target.value });
+    setBody({
+      ...body,
+      [e.target.name]: e.target.value,
+      keysChangePassword: router.query.otp,
+    });
 
   const checkEmptyForm = (body) => {
     if (!body.newPassword || !body.confirmPassword) return setEmptyForm(true);
     body.newPassword && body.confirmPassword && setEmptyForm(false);
   };
+  const resetSuccess = () => {
+    toast.success("Reset Password success! Please Login again");
+    router.push("/login");
+  };
+
+  const resetDenied = () => toast.error(`${auth.error}`);
 
   const subimitHandler = (e) => {
     e.preventDefault();
     if (body.newPassword !== body.confirmPassword) return setNotSimilar(true);
+    dispatch(authAction.resetThunk(body, resetSuccess, resetDenied));
   };
   useEffect(() => {
     checkEmptyForm(body);
   }, [body]);
-  console.log(router.query.key);
+  useEffect(() => {
+    if (auth.isLoading) setEmptyForm(true);
+  }, [auth]);
+
+  console.log(body);
   return (
     <>
       <PageTitle title="Reset Password" />

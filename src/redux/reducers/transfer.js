@@ -7,7 +7,7 @@ const initialState = {
     amount: null,
     notes: null,
   },
-  transferDuit: {
+  transfer: {
     id: null,
     senderId: null,
     receiverId: null,
@@ -20,9 +20,12 @@ const initialState = {
 
 const transferReducer = (prevState = initialState, { type, payload }) => {
   const { Pending, Rejected, Fulfilled } = ActionType;
-  const { transferData, transferDuit } = actionStrings;
+  const { transferData, transfer } = actionStrings;
   console.log(payload);
   switch (type) {
+    case actionStrings.resetTransfer:
+      return initialState;
+
     case transferData:
       return {
         ...prevState,
@@ -32,14 +35,15 @@ const transferReducer = (prevState = initialState, { type, payload }) => {
           notes: payload.body.notes,
         },
       };
-    case transferDuit.concat("_", Pending):
+
+    case transfer.concat("_", Pending):
       return {
         ...prevState,
         isLoading: true,
         isError: false,
         isFulfilled: false,
       };
-    case transferDuit.concat("_", Rejected):
+    case transfer.concat("_", Rejected):
       return {
         ...prevState,
         isError: true,
@@ -47,14 +51,14 @@ const transferReducer = (prevState = initialState, { type, payload }) => {
         isFulfilled: false,
         error: payload.error.message,
       };
-    case transferDuit.concat("_", Fulfilled):
+    case transfer.concat("_", Fulfilled):
       console.log(payload);
       return {
         ...prevState,
         isError: false,
         isFulfilled: true,
         isLoading: false,
-        transferDuit: {
+        transfer: {
           id: payload.data.id,
           senderId: payload.data.senderId,
           receiverId: payload.data.receiverId,

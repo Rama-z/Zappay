@@ -4,6 +4,7 @@ import Sidebar from "components/Sidebar";
 import Footer from "components/Footer";
 import css from "styles/Profile.module.css";
 import Image from "next/image";
+import ModalLogout from "src/components/ModalLogout";
 
 import sample from "../../assets/avatar.webp";
 import { useRouter } from "next/router";
@@ -22,6 +23,8 @@ function Profile() {
   // const link = process.env.CLOUDINARY_LINK;
   const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
   const inputFileRef = React.createRef();
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalhandler = () => setModalOpen(!modalOpen);
 
   const inputImage = () => {
     inputFileRef.current.click();
@@ -39,16 +42,16 @@ function Profile() {
     router.push("/profile/change-pin");
   };
 
-  const handleModal = () => setOpenModal(!openModal);
+  // const handleModal = () => setOpenModal(!openModal);
 
-  const logoutHandler = () => {
-    dispatch(
-      authAction.logoutThunk(() => {
-        toast.success(`${logoutMsg}`);
-        router.push("/login");
-      })
-    );
-  };
+  // const logoutHandler = () => {
+  //   dispatch(
+  //     authAction.logoutThunk(() => {
+  //       toast.success(`${logoutMsg}`);
+  //       router.push("/login");
+  //     })
+  //   );
+  // };
 
   const editImageHandler = (e) => {
     const body = new FormData();
@@ -136,7 +139,6 @@ function Profile() {
                         <i className="fa-solid fa-arrow-right"></i>
                       </span>
                     </button>
-                    <button onClick={handleModal}>Logout </button>
                   </div>
                 </div>
               </div>
@@ -144,26 +146,6 @@ function Profile() {
           </div>
         </div>
       </main>
-      {openModal && (
-        <div className={css.modal}>
-          <div className={css["modal-container"]}>
-            <div className={css["title-modal"]}>
-              <p>Logout</p>
-            </div>
-            <div className={css.ask}>
-              <p>Are you sure want to logout?</p>
-            </div>
-            <div className={css["container-btn"]}>
-              <div className={`${css.btn}`} onClick={logoutHandler}>
-                <p>YES</p>
-              </div>
-              <div className={css["btn-close"]} onClick={handleModal}>
-                <p>NO</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       <Footer />
     </>
   );
