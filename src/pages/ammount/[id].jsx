@@ -11,16 +11,33 @@ import pen from "src/assets/Vector-pen.png";
 import { useDispatch, useSelector } from "react-redux";
 import authAction from "src/redux/actions/auth";
 import userAction from "src/redux/actions/user";
+import sample from "src/assets/avatar.webp";
+import { actionStrings } from "src/redux/actions/actionStrings";
+import transferDataActions from "src/redux/actions/transfer";
 
 function Home() {
   const router = useRouter();
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
-  const link = process.env.CLOUDINARY_LINK;
+  // const link = process.env.CLOUDINARY_LINK;
+  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+  const [body, setBody] = useState({});
+  console.log(body);
   const [filter, setFilter] = useState(false);
   const dispatch = useDispatch();
+
+  const changeHandler = (e) =>
+    setBody({ ...body, id: router.query.id, [e.target.name]: e.target.value });
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(transferDataActions.transferData(body));
+  };
+
   useEffect(() => {
-    dispatch(userAction.getUserDetailThunk(auth.userData.token));
+    dispatch(
+      userAction.getUserDetail2Thunk(auth.userData.token, router.query.id)
+    );
   }, [auth]);
 
   return (
@@ -38,10 +55,24 @@ function Home() {
             </div>
             <div className={css["card"]}>
               <div className={css["image-name"]}>
-                <Image src={user1} alt="user" width={56} height={56} />
+                <Image
+                  src={
+                    user.profileTarget.image
+                      ? `${link}${user.profileTarget.image}`
+                      : sample
+                  }
+                  alt="user"
+                  width={56}
+                  height={56}
+                />
                 <div>
-                  <p className={css["username"]}>Samuel Suhi</p>
-                  <p className={css.status}>+62 8139 3877 7946</p>
+                  <p className={css["username"]}>
+                    {user.profileTarget.firstName}
+                    {user.profileTarget.lastName}
+                  </p>
+                  <p className={css.status}>
+                    {user.profileTarget.noTelp || "-"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -51,32 +82,41 @@ function Home() {
                 the next steps.
               </div>
             </div>
-            <div className={css["input-transfer"]}>
-              <input
-                className={css.searchImage}
-                type="text"
-                placeholder="0.00"
-              />
-            </div>
-            <div className={css.availability}>Rp120.000 Available</div>
-            <div className={css["input-transfer2"]}>
-              <Image className={css["image-pen"]} src={pen} alt="pen" />
-              <input
-                className={css.notes}
-                type="text"
-                placeholder="Add some notes"
-              />
-            </div>
-            <div className={css.continue1}>
-              <button
-                className={css.continue}
-                onClick={() => {
-                  router.push("/confirmation/:id");
-                }}
-              >
-                Continue
-              </button>
-            </div>
+            <form onSubmit={submitHandler}>
+              <div className={css["input-transfer"]}>
+                <input
+                  className={css.searchImage}
+                  type="text"
+                  name="ammount"
+                  placeholder="0.00"
+                  onChange={changeHandler}
+                />
+              </div>
+              <div className={css.availability}>
+                Rp{user.profile.balance} Available
+              </div>
+              <div className={css["input-transfer2"]}>
+                <Image className={css["image-pen"]} src={pen} alt="pen" />
+                <input
+                  className={css.notes}
+                  type="text"
+                  name="notes"
+                  placeholder="Add some notes"
+                  onChange={changeHandler}
+                />
+              </div>
+              <div className={css.continue1}>
+                <button
+                  type="submit"
+                  className={css.continue}
+                  onClick={() => {
+                    router.push(`/confirmation/${router.query.id}`);
+                  }}
+                >
+                  Continue
+                </button>
+              </div>
+            </form>
           </aside>
         </section>
       </div>

@@ -28,6 +28,14 @@ const initialState = {
     limit: null,
     totalData: null,
   },
+  profileTarget: {
+    firstName: null,
+    lastName: null,
+    email: null,
+    image: null,
+    noTelp: null,
+    balance: null,
+  },
 };
 
 const userReducer = (prevState = initialState, { type, payload }) => {
@@ -35,9 +43,10 @@ const userReducer = (prevState = initialState, { type, payload }) => {
   const {
     userGetAll,
     userDetail,
+    userDetail2,
     userExpense,
     userHistory,
-    userCheckPin,
+    checkPin,
     userEditProfile,
     userEditPhone,
     userEditImage,
@@ -107,6 +116,37 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         isFulfilled: true,
         isLoading: false,
         profile: {
+          firstName: payload.data.data.firstName,
+          lastName: payload.data.data.lastName,
+          email: payload.data.data.email,
+          image: payload.data.data.image,
+          noTelp: payload.data.data.noTelp,
+          balance: payload.data.data.balance,
+        },
+      };
+
+    case userDetail2.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case userDetail2.concat("_", Rejected):
+      return {
+        ...prevState,
+        isError: true,
+        isLoading: false,
+        isFulfilled: false,
+        error: payload.error.message,
+      };
+    case userDetail2.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isError: false,
+        isFulfilled: true,
+        isLoading: false,
+        profileTarget: {
           firstName: payload.data.data.firstName,
           lastName: payload.data.data.lastName,
           email: payload.data.data.email,
@@ -192,26 +232,28 @@ const userReducer = (prevState = initialState, { type, payload }) => {
         },
       };
 
-    case userCheckPin.concat("_", Pending):
+    case checkPin.concat("_", Pending):
       return {
         ...prevState,
         isLoading: true,
         isError: false,
         isFulfilled: false,
+        pinMsg: null,
+        pinWorng: null,
       };
-    case userCheckPin.concat("_", Rejected):
+    case checkPin.concat("_", Rejected):
       return {
         ...prevState,
         isError: true,
         isLoading: false,
-        isFulfilled: false,
-        error: payload.error.message,
+        pinWorng: true,
       };
-    case userCheckPin.concat("_", Fulfilled):
+    case checkPin.concat("_", Fulfilled):
       return {
         ...prevState,
         isFulfilled: true,
         isLoading: false,
+        pinMsg: payload.pin.data.msg,
       };
 
     case userEditProfile.concat("_", Pending):

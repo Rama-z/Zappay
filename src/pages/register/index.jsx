@@ -15,18 +15,34 @@ export default function Register() {
   const [unouthorized, setUnouthorized] = useState(false);
   const [body, setBody] = useState({});
   const dispath = useDispatch();
+  const isLoading = useSelector((state) => state.auth.isLoading);
   const auth = useSelector((state) => state.auth);
   const router = useRouter();
 
+  const registerSucces = () => {
+    toast.success("Register Success! Please Check Your Email");
+    router.push("/login");
+  };
+
+  const registerDenied = () => {
+    toast.error(`${auth.error}`);
+  };
+
   const registerHandler = (e) => {
     e.preventDefault();
-    dispath(authAction.registerThunk(body));
+    dispath(authAction.registerThunk(body, registerSucces, registerDenied));
   };
 
   const togglePassword = () => setShowPassword(!showPassword);
 
   const checkEmptyForm = (body) => {
-    if (!body.email || !body.password || !body.firstName || !body.lastName)
+    if (
+      isLoading ||
+      !body.email ||
+      !body.password ||
+      !body.firstName ||
+      !body.lastName
+    )
       return setEmptyForm(true);
     body.email &&
       body.password &&
@@ -39,13 +55,13 @@ export default function Register() {
     setBody({ ...body, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    if (auth.isLoading) setEmptyForm(true);
-    if (auth.isFulfilled) {
-      toast.success(`Register success, please login first`);
-      router.push("/login");
-    }
-  }, [auth]);
+  // useEffect(() => {
+  //   if (auth.isLoading) setEmptyForm(true);
+  //   if (auth.isFulfilled) {
+  //     toast.success(`Register success, please login first`);
+  //     router.push("/login");
+  //   }
+  // }, [auth]);
 
   useEffect(() => {
     checkEmptyForm(body);

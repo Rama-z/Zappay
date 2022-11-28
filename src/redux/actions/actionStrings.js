@@ -5,6 +5,7 @@ export const actionStrings = {
   authForgot: "AUTH_FORGOT_PASSWORD",
   authReset: "AUTH_RESET_PASSWORD",
   userDetail: "USER_GET_DETAIL",
+  userDetail2: "USER_GET_DETAIL2",
   userExpense: "USER_GET_EXPENSE",
   userHistory: "GET_TRANSACTIONS_HISTORY",
   userGetAll: "USER_GET_ALL",
@@ -15,4 +16,7 @@ export const actionStrings = {
   userEditPin: "USER_EDIT_PIN",
   userEditPassword: "USER_EDIT_PASSWORD",
   userDeleteImage: "USER_DELETE_IMAGE",
+  transferData: "TRANSFER_DATA",
+  transferDuit: "TRANSFER_DUIT",
+  checkPin: "CHECK_PIN_USER",
 };

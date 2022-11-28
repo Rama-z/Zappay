@@ -15,6 +15,8 @@ function Home({ children }) {
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
   const router = useRouter();
+  // const link = process.env.CLOUDINARY_LINK
+  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
   const dispatch = useDispatch();
   // const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState({});
@@ -29,6 +31,9 @@ function Home({ children }) {
         auth.userData.token,
         `?page=1&limit=5&filter=MONTH`
       )
+    );
+    dispatch(
+      userAction.getUserDetailThunk(auth.userData.token, auth.userData.id)
     );
   }, [auth]);
 
@@ -154,7 +159,7 @@ function Home({ children }) {
                     <p
                       className={css["seall"]}
                       onClick={() => {
-                        router.push("/history/:id");
+                        router.push(`/history/${user.profile.firstName}`);
                       }}
                     >
                       See all
@@ -166,7 +171,7 @@ function Home({ children }) {
                         <div className={css["card"]}>
                           <div className={css["image-name"]}>
                             <Image
-                              src={user1}
+                              src={item.image ? `${link}/${item.image}` : user1}
                               alt="user"
                               width={56}
                               height={56}

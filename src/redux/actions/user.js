@@ -8,6 +8,7 @@ import {
   editPin,
   editProfile,
   getDetailUser,
+  getDetailUser2,
   getExpense,
   getHistory,
   getAllUser,
@@ -44,6 +45,20 @@ const userDetailFulfilled = (data) => ({
   payload: { data },
 });
 
+const userDetail2Pending = () => ({
+  type: actionStrings.userDetail2.concat("_", Pending),
+});
+
+const userDetail2Rejected = (error) => ({
+  type: actionStrings.userDetail2.concat("_", Rejected),
+  payload: { error },
+});
+
+const userDetail2Fulfilled = (data) => ({
+  type: actionStrings.userDetail2.concat("_", Fulfilled),
+  payload: { data },
+});
+
 const userExpensePending = () => ({
   type: actionStrings.userExpense.concat("_", Pending),
 });
@@ -69,19 +84,6 @@ const userHistoryRejected = (error) => ({
 
 const userHistoryFulfilled = (data) => ({
   type: actionStrings.userHistory.concat("_", Fulfilled),
-  payload: { data },
-});
-
-const checkPinPending = () => ({
-  type: actionStrings.userCheckPin.concat("_", Pending),
-});
-
-const checkPinRejected = (error) => ({
-  type: actionStrings.userCheckPin.concat("_", Rejected),
-  payload: { error },
-});
-const checkPinFulfilled = (data) => ({
-  type: actionStrings.userCheckPin.concat("_", Fulfilled),
   payload: { data },
 });
 
@@ -163,6 +165,20 @@ const deleteImageFulfilled = (data) => ({
   payload: { data },
 });
 
+const checkPinPending = () => ({
+  type: actionStrings.checkPin.concat("_", Pending),
+});
+
+const checkPinRejected = (error) => ({
+  type: actionStrings.checkPin.concat("_", Rejected),
+  payload: { error },
+});
+
+const checkPinFulfilled = (pin) => ({
+  type: actionStrings.checkPin.concat("_", Fulfilled),
+  payload: { pin },
+});
+
 const getAllUserThunk = (token, link) => {
   return async (dispatch) => {
     try {
@@ -189,6 +205,19 @@ const getUserDetailThunk = (token, id) => {
   };
 };
 
+const getUserDetail2Thunk = (token, id) => {
+  return async (dispatch) => {
+    try {
+      dispatch(userDetail2Pending());
+      const result = await getDetailUser2(token, id);
+      console.log(result);
+      dispatch(userDetail2Fulfilled(result.data));
+    } catch (error) {
+      dispatch(userDetail2Rejected(error));
+    }
+  };
+};
+
 const getUserExpenseThunk = (token, id) => {
   return async (dispatch) => {
     try {
@@ -211,18 +240,6 @@ const getUserHistoryThunk = (token, link) => {
       dispatch(userHistoryFulfilled(result.data));
     } catch (error) {
       dispatch(userHistoryRejected(error));
-    }
-  };
-};
-
-const checkPinThunk = (token, id) => {
-  return async (dispatch) => {
-    try {
-      dispatch(checkPinPending());
-      const result = await checkPin(token, id);
-      dispatch(checkPinFulfilled(result.data));
-    } catch (error) {
-      dispatch(checkPinRejected(error));
     }
   };
 };
@@ -301,18 +318,35 @@ const deleteImageThunk = (token, id, body) => {
   };
 };
 
+const checkPinThunk = (pin, token, callback) => {
+  return async (dispatch) => {
+    try {
+      dispatch(checkPinPending());
+      const result = await checkPin(pin, token);
+      dispatch(checkPinFulfilled(result));
+      console.log(typeof callback);
+      if (typeof callback === "function") {
+        callback();
+      }
+    } catch (error) {
+      dispatch(checkPinRejected(error));
+    }
+  };
+};
+
 const userAction = {
   getAllUserThunk,
   getUserDetailThunk,
+  getUserDetail2Thunk,
   getUserExpenseThunk,
   getUserHistoryThunk,
-  checkPinThunk,
   editProfileThunk,
   editPhoneThunk,
   editImageThunk,
   editPinThunk,
   editPasswordThunk,
   deleteImageThunk,
+  checkPinThunk,
 };
 
 export default userAction;

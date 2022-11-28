@@ -5,12 +5,14 @@ import css from "src/styles/Navbar.module.css";
 import Sidebar from "components/Sidebar";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import sample from "src/assets/avatar.webp";
 
 function Navbar({ children }) {
   const [show, setShow] = useState(false);
   const router = useRouter();
   const user = useSelector((state) => state.user);
-  const link = process.env.CLOUDINARY_LINK;
+  // const link = process.env.CLOUDINARY_LINK;
+  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
 
   const notifHandler = (e) => {
     e.preventDefault();
@@ -41,11 +43,13 @@ function Navbar({ children }) {
         <div className={css["navbar-right"]}>
           <div className={css["mobile"]}>
             <Image
-              src={`${process.env.CLOUDINARY_LINK}${user.profile.image}`}
+              src={
+                user.profile.image ? `${link}/${user.profile.image}` : sample
+              }
               alt="profile"
               style={{ cursor: "pointer" }}
-              width={50}
-              height={50}
+              layout="fill"
+              objectFit="cover"
             />
             <div className={css["name-phone"]}>
               <p className={css["greating"]}>Hello,</p>
@@ -56,11 +60,17 @@ function Navbar({ children }) {
             </div>
           </div>
           <div className={css["pc"]}>
-            <Image
-              src={user.profile.image}
-              alt="profile"
-              style={{ cursor: "pointer" }}
-            />
+            <div className={css["image-profile"]}>
+              <Image
+                src={
+                  user.profile.image ? `${link}/${user.profile.image}` : sample
+                }
+                alt="profile"
+                style={{ cursor: "pointer" }}
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
             <div className={css["name-phone"]}>
               <p className={css["navbar-name"]}>
                 {user.profile.firstName} {user.profile.lastName}

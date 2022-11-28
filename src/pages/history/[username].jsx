@@ -8,15 +8,20 @@ import css from "styles/History.module.css";
 import user1 from "src/assets/1.png";
 import { useDispatch, useSelector } from "react-redux";
 import userAction from "src/redux/actions/user";
+import Loading from "src/components/Loading";
+import { useRouter } from "next/router";
 
 function Home() {
   const isData = true;
   const [filter, setFilter] = useState(false);
   const user = useSelector((state) => state.user);
+  const [filtering, setFiltering] = useState(user.history);
   const [page, setPage] = useState(1);
-  console.log(page);
+  // const link = process.env.CLOUDINARY_LINK
+  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     dispatch(
@@ -51,14 +56,24 @@ function Home() {
               </div>
             </div>
           </div>
-          {isData ? (
+          {!user.isLoading ? (
             <div>
               {user.history &&
                 user.history.map((item) => {
                   return (
-                    <div className={css["card"]}>
+                    <div
+                      className={css["card"]}
+                      onClick={() => {
+                        router.push(`/ammount/${item.id}`);
+                      }}
+                    >
                       <div className={css["image-name"]}>
-                        <Image src={user1} alt="user" width={56} height={56} />
+                        <Image
+                          src={item.image ? `${link}/${item.image}` : user1}
+                          alt="user"
+                          width={56}
+                          height={56}
+                        />
                         <div>
                           <p className={css["username"]}>{item.fullName}</p>
                           <p className={css.status}>{item.type}</p>
@@ -80,9 +95,7 @@ function Home() {
                 })}
             </div>
           ) : (
-            <div>
-              <div className={css["no-data"]}>No Data Available</div>
-            </div>
+            <Loading />
           )}
           <div className={`${css["paginasi"]}`}>
             <button

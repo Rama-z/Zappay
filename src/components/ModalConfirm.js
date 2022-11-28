@@ -1,8 +1,80 @@
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import transferDataActions from "src/redux/actions/transfer";
+import userAction from "src/redux/actions/user";
 import styles from "src/styles/Modal.module.css";
 const ReactCodeInput = dynamic(import("react-code-input"));
 
 const ModalConfirm = ({ open, setOpen }) => {
+  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
+  const transfer = useSelector((state) => state.transfer);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [pin, setPin] = useState("");
+  const [btnAccess, setBtn] = useState(false);
+  const [errPin, setErrpin] = useState();
+  const navigate = () => {
+    router.push("/transfer/status");
+  };
+  const transferHandler = () => {
+    dispatch(
+      transferDataActions.transferDuitThunk(
+        auth.userData.token,
+        {
+          receiverId: transfer.transferData.receiverId,
+          amount: transfer.transferData.amount,
+          notes: transfer.transferData.notes,
+        },
+        navigate
+      )
+    );
+    if (transfer.isFulfilled) console.log("sukses");
+    if (transfer.isError) console.log("error");
+  };
+
+  const checkPinHandler = async (e) => {
+    e.preventDefault();
+    setOpen(!open);
+    setErrpin();
+    if (!btnAccess) return;
+    dispatch(
+      userAction.checkPinThunk(pin, auth.userData.token, transferHandler)
+    );
+  };
+
+  const pinHandler = (e) => {
+    setPin(e);
+  };
+
+  useEffect(() => {
+    if (pin.length === 6) setBtn(true);
+    if (pin.length < 6) setBtn(false);
+  }, [pin]);
+
+  useEffect(() => {
+    if (transfer.isLoading) setBtn(true);
+    if (!transfer.isLoading) setBtn(false);
+    if (user.pinWorng) setErrpin("Pin Worng !");
+    // if (users.isFulfilled) {
+    // const sendData = {
+    //   receiverId: transaction.transfer.receiverId,
+    //   amount: transaction.transfer.total,
+    //   notes: transaction.transfer.notes,
+    // };
+    // dispatch(
+    //   transactionAction.createTransactionThunk(sendData, auth.userData.token)
+    // );
+    //   if (transaction.statusTransfer) router.push("/transfer/status");
+    // }
+    //   dispatch(userAction.resetpinMsgThunk());
+    // }
+    // if (users.pinMsg) {
+    //   router.push("/transfer/status");
+    // }
+  }, [user, auth, dispatch, transfer, router]);
   return (
     <>
       {open && (
@@ -24,12 +96,20 @@ const ModalConfirm = ({ open, setOpen }) => {
                         type="password"
                         fields={6}
                         className={styles["otp-box"]}
+                        onChange={pinHandler}
                       />
                     </div>
-                    <div onClick={() => setOpen(!open)}>
-                      <button type="submit" className="btn btn-primary">
-                        Confirm
-                      </button>
+                    {errPin && (
+                      <p style={{ color: "var(--red)", fontWeight: "700" }}>
+                        {errPin}
+                      </p>
+                    )}
+                    <div
+                      onClick={checkPinHandler}
+                      className={btnAccess ? undefined : styles["not-accept"]}
+                      style={{ justifyContent: "right", display: "flex" }}
+                    >
+                      <button type="submit">Confirm</button>
                     </div>
                   </form>
                 </div>

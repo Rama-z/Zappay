@@ -17,14 +17,18 @@ export const getAllUser = (token, link) =>
 export const getDetailUser = (token, id) =>
   axios.get(`${baseUrl}/profile/${id}`, config(token));
 
+export const getDetailUser2 = (token, id) =>
+  axios.get(`${baseUrl}/profile/${id}`, config(token));
+
 export const getExpense = (token, id) =>
   axios.get(`${baseUrl2}/dashboard/${id}`, config(token));
 
 export const getHistory = (token, link) =>
   axios.get(`${baseUrl2}/transaction/history${link}`, config(token));
 
-export const checkPin = (token, pin) =>
-  axios.get(`${baseUrl}/pin?pin=${pin}`, config(token));
+export const checkPin = (pin, token) => {
+  return axios.get(`${baseUrl}/pin/${pin}`, config(token));
+};
 
 export const editProfile = (token, id, body) =>
   axios.patch(`${baseUrl}/profile/${id}`, body, config(token));

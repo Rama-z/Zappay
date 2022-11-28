@@ -5,12 +5,11 @@ import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import Footer from "components/Footer";
 import css from "styles/Transfer.module.css";
-import user1 from "src/assets/1.png";
-import user2 from "src/assets/image.png";
-import search from "src/assets/search.png";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import userAction from "src/redux/actions/user";
+import icon from "src/assets/search.png";
+import sample from "src/assets/avatar.webp";
 
 // const ReactCodeInput = dynamic(import("react-code-input"));
 
@@ -19,6 +18,8 @@ function Home() {
   const [filter, setFilter] = useState(false);
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
+  // const link = process.env.CLOUDINARY_LINK;
+  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
   const [page, setPage] = useState(1);
   const [searchs, setSearchs] = useState("");
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function Home() {
       )
     );
   }, [auth, page]);
+
   return (
     <>
       <Header title={"HOME"} />
@@ -51,27 +53,42 @@ function Home() {
           <div className={css["right-top"]}>
             <p className={css["transaction"]}>Search Receiver</p>
           </div>
-          <div className={css.searchs}>
-            <Image src={search} className={css.searchImage} alt="search" />
-            <input
-              type="text"
-              className={css.searchInput}
-              // onChange={searchHandler}
-              placeholder="Search receiver here"
-            />
-          </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              router.push(`/transfer?q=${e.target.q.value}`);
+            }}
+          >
+            <div className={css.searchs}>
+              <Image src={icon} className={css.searchImage} alt="search" />
+              <input
+                type="text"
+                className={css.searchInput}
+                // onChange={searchHandler}
+                placeholder="Search receiver here"
+              />
+            </div>
+          </form>
           {user.allData ? (
-            user.allData.map((item) => {
+            user.allData.map((item, idx) => {
               return (
-                <div>
+                <div className={css.conimage}>
                   <div
                     className={css["card"]}
                     onClick={() => {
-                      router.push("/ammount/:id");
+                      router.push(`/ammount/${item.id}`);
                     }}
                   >
                     <div className={css["image-name"]}>
-                      <Image src={user1} alt="user" width={56} height={56} />
+                      <div className={css["image-profile"]}>
+                        <Image
+                          src={item.image ? `${link}/${item.image}` : sample}
+                          alt="user"
+                          width={56}
+                          height={56}
+                          key={idx}
+                        />
+                      </div>
                       <div>
                         <p
                           className={css["username"]}

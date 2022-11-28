@@ -27,7 +27,15 @@ function Home() {
             </div>
             <div className={css["card"]}>
               <div className={css["image-name"]}>
-                <Image src={user} alt="user" width={56} height={56} />
+                <Image
+                  src={user}
+                  alt="user"
+                  width={56}
+                  height={56}
+                  style={{ cursor: "pointer" }}
+                  layout="fill"
+                  objectFit="cover"
+                />
                 <div>
                   <p className={css["username"]}>Samuel Suhi</p>
                   <p className={css.status}>+62 8139 3877 7946</p>

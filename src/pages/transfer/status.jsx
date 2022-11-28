@@ -7,6 +7,8 @@ import Header from "components/Header";
 import Navbar from "components/Navbar";
 import Footer from "components/Footer";
 import { useRouter } from "next/router";
+import success from "src/assets/success.png";
+import failed from "src/assets/failed.png";
 
 function Status() {
   const router = useRouter();

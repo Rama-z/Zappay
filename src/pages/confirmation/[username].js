@@ -9,11 +9,25 @@ import user from "src/assets/1.png";
 import { useRouter } from "next/router";
 // import { toast } from "react-toastify";
 import Modal from "src/components/ModalConfirm";
+import { useSelector } from "react-redux";
+import sample from "src/assets/avatar.webp";
 
 function Home() {
   const [modalOpen, setModalOpen] = useState(false);
-  // const router = useRouter();
+  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
+  const transfer = useSelector((state) => state.transfer);
+  const router = useRouter();
+  const newDate = new Date();
+  const month = newDate.toLocaleString("en-US", { month: "long" });
+  const year = newDate.getFullYear();
+  const date = newDate.getDate();
+  const hour = newDate.getHours();
+  const minute = newDate.getMinutes();
   const modalhandler = () => setModalOpen(!modalOpen);
+  // const link = process.env.CLOUDINARY_LINK;
+  const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
+
   return (
     <>
       <Header title={"HOME"} />
@@ -29,10 +43,23 @@ function Home() {
             </div>
             <div className={css["card"]}>
               <div className={css["image-name"]}>
-                <Image src={user} alt="user" width={56} height={56} />
+                <Image
+                  src={
+                    user.profileTarget.image
+                      ? `${link}${user.profileTarget.image}`
+                      : sample
+                  }
+                  alt="user"
+                  width={56}
+                  height={56}
+                />
                 <div>
-                  <p className={css["username"]}>Samuel Suhi</p>
-                  <p className={css.status}>+62 8139 3877 7946</p>
+                  <p className={css["username"]}>
+                    {user.profileTarget.firstName} {user.profileTarget.lastName}
+                  </p>
+                  <p className={css.status}>
+                    {user.profileTarget.noTelp || "-"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -42,25 +69,34 @@ function Home() {
             <div className={css["card-detail"]}>
               <div>
                 <p className={css.details}>Amount</p>
-                <p className={css.subdetails}>Rp100.000</p>
+                <p className={css.subdetails}>
+                  Rp{transfer.transferData.amount}
+                </p>
               </div>
             </div>
             <div className={css["card-detail"]}>
               <div>
                 <p className={css.details}>Balance</p>
-                <p className={css.subdetails}>Rp20.000</p>
+                <p className={css.subdetails}>Rp{user.profile.balance}</p>
               </div>
             </div>
             <div className={css["card-detail"]}>
               <div>
                 <p className={css.details}>Date & Time</p>
-                <p className={css.subdetails}>May 11, 2020 - 12.20</p>
+                <p className={css.subdetails}>
+                  {month} {date}, {year} - {hour}.{minute}
+                </p>
               </div>
             </div>
             <div className={css["card-detail"]}>
               <div>
                 <p className={css.details}>Notes</p>
-                <p className={css.subdetails}>For buying some socks</p>
+                <p
+                  className={css.subdetailsNotes}
+                  placeholder="Type your note here"
+                >
+                  {transfer.transferData.notes}
+                </p>
               </div>
             </div>
             <div

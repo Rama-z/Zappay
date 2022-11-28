@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import userAction from "src/redux/actions/user";
+import authAction from "src/redux/actions/auth";
 
 const ReactCodeInput = dynamic(import("react-code-input"));
 
@@ -21,7 +22,7 @@ export default function CreatePin() {
   const isLoading = useSelector((state) => state.user.isLoading);
   const errorMsg = useSelector((state) => state.user.error);
   const userData = useSelector((state) => state.auth.userData);
-  const user = useSelector((state) => state.profile);
+  const user = useSelector((state) => state.user);
 
   const checkEmptyPin = (pin1, pin2) => {
     if (!pin1 || pin1.length !== 6 || !pin2 || pin2.length !== 6)
@@ -32,16 +33,15 @@ export default function CreatePin() {
   const handlerPin1 = (e) => setPin1(`${e}`);
   const handlerPin2 = (e) => setPin2(`${e}`);
 
-  console.log(pin1, pin2);
   const showConfirmHandler = (pin1) => {
     if (pin1.length != 6) return setShowConfirmInput(false);
     return setShowConfirmInput(true);
   };
 
   const createPinSuccess = () => {
-    toast.success("Create Pin Success, Enjoy!");
-    router.push(`/dashboard/${user.fullName}`);
-    console.log("Directed to Dashboard");
+    toast.success("Create Pin Success, please Re-login!");
+    dispatch(authAction.logoutThunk());
+    router.push(`/login`);
   };
 
   const createPinError = () => {
