@@ -1,10 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "components/Navbar";
 import Footer from "components/Footer";
 import Sidebar from "components/Sidebar";
 import css from "styles/EditPhone.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import userAction from "src/redux/actions/user";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
-function editPhone() {
+function EditPhone() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [body, setBody] = useState({});
+  const [emptyForm, setEmptyForm] = useState(true);
+  const userData = useSelector((state) => state.auth.userData);
+
+  const checkEmptyForm = (body) => {
+    if (!body.noTelp) return setEmptyForm(true);
+    body.noTelp && setEmptyForm(false);
+  };
+
+  const changeHandler = (e) =>
+    setBody({ ...body, [e.target.name]: e.target.value });
+
+  const editPhoneSuccess = () => {
+    toast.success("Your phone number updated successfully!");
+    router.push("/profile/information");
+  };
+  // const editPhoneError = () => {
+  //   if (body.length < 12) return toast.error("harus 12 jir");
+  // };
+
+  console.log(body);
+
+  const editPhoneHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      userAction.editPhoneThunk(
+        userData.token,
+        userData.id,
+        body,
+        editPhoneSuccess
+      )
+    );
+  };
+
+  useEffect(() => {
+    checkEmptyForm(body);
+  }, [body]);
   return (
     <>
       <Header />
@@ -27,14 +70,32 @@ function editPhone() {
                     </p>
                   </div>
                 </div>
-                <form action="">
-                  <div className={css["input"]}>
-                    <i className="fa-solid fa-phone"></i>
+                <form onSubmit={editPhoneHandler}>
+                  <div
+                    className={
+                      emptyForm
+                        ? css["input"]
+                        : `${css["input"]} ${css["blue"]}`
+                    }
+                  >
+                    {emptyForm ? (
+                      <i className={`fa-solid fa-phone`}></i>
+                    ) : (
+                      <i className={`fa-solid fa-phone ${css.blue}`}></i>
+                    )}
                     <p>+62</p>
-                    <input type="text" />
+                    <input
+                      type="text"
+                      name="noTelp"
+                      placeholder="exp:12-3456-7890"
+                      required
+                      onChange={changeHandler}
+                    />
                   </div>
                   <div className={css["edit-btn"]}>
-                    <button>Edit Phone Number</button>
+                    <button type="submit" disabled={emptyForm}>
+                      Edit Phone Number
+                    </button>
                   </div>
                 </form>
               </div>
@@ -47,4 +108,4 @@ function editPhone() {
   );
 }
 
-export default editPhone;
+export default EditPhone;

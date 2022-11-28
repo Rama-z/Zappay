@@ -51,8 +51,24 @@ function Home() {
                 -- Select Filter --
               </div>
               <div className={filter ? css.filterDownOn : css.filterDownOff}>
-                <p className={css.filterDownOn2}>Send</p>
-                <p className={css.filterDownOn2}>Accept</p>
+                <p
+                  className={css.filterDownOn2}
+                  onClick={() => {
+                    setFiltering("send");
+                    setFilter(filter ? false : true);
+                  }}
+                >
+                  Send
+                </p>
+                <p
+                  className={css.filterDownOn2}
+                  onClick={() => {
+                    setFiltering("accept");
+                    setFilter(filter ? false : true);
+                  }}
+                >
+                  Accept
+                </p>
               </div>
             </div>
           </div>
@@ -82,10 +98,16 @@ function Home() {
                       <div>
                         <p
                           className={
-                            item.type === "accept" ? css.recieve : css.paid
+                            item.type === "accept"
+                              ? css.recieve
+                              : item.type === "topup"
+                              ? css.recieve
+                              : css.paid
                           }
                         >
                           {item.type === "accept"
+                            ? `+${item.amount}`
+                            : item.type === "topup"
                             ? `+${item.amount}`
                             : `-${item.amount}`}
                         </p>

@@ -1,7 +1,7 @@
 /* personal info */
 
 .main-container {
-  background-color: #E5E5E5;
+  background-color: #e5e5e5;
   display: flex;
   gap: 3rem;
   padding-top: 3rem;
@@ -28,7 +28,7 @@
 }
 
 .title-small p {
-  color: #7A7886;
+  color: #7a7886;
 }
 
 .item-container {
@@ -104,7 +104,7 @@
 }
 
 .form-password button:disabled {
-  color: #3a3d42;
+  color: #7a7886;
   background-color: #3a3d424d;
 }
 
@@ -177,6 +177,10 @@
   box-shadow: 0 4px 20px #0000000d;
 }
 
+.form-password .blue {
+  color: #6379f4 !important;
+}
+
 @media (max-width: 576px) {
   .main-container {
     padding: 1em;
@@ -197,7 +201,8 @@
   }
 }
 
-@media (min-width: 768px) {}
+@media (min-width: 768px) {
+}
 
 @media (max-width: 992px) {
   .link-container {

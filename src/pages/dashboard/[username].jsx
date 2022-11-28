@@ -184,10 +184,16 @@ function Home({ children }) {
                           <div>
                             <p
                               className={
-                                item.type === "accept" ? css.recive : css.paid
+                                item.type === "accept"
+                                  ? css.recive
+                                  : item.type === "topup"
+                                  ? css.recive
+                                  : css.paid
                               }
                             >
                               {item.type === "accept"
+                                ? `+${item.amount}`
+                                : item.type === "topup"
                                 ? `+${item.amount}`
                                 : `-${item.amount}`}
                             </p>

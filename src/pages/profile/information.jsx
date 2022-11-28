@@ -3,8 +3,16 @@ import Header from "components/Navbar";
 import Footer from "components/Footer";
 import Sidebar from "components/Sidebar";
 import css from "styles/ProfileInfo.module.css";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
-function personalInfo() {
+function Information() {
+  const router = useRouter();
+  const profile = useSelector((state) => state.user.profile);
+
+  const toEditPhone = () => {
+    router.push("/profile/edit-phone");
+  };
   return (
     <>
       <Header />
@@ -26,12 +34,15 @@ function personalInfo() {
                     support.
                   </p>
                 </div>
+                <div className={css["edit-btn"]}>
+                  <p>Edit</p>
+                </div>
                 <form action="">
                   <div className={css["input-bar"]}>
                     <label htmlFor="">First Name</label>
                     <input
                       type="text"
-                      value="Kolak"
+                      value={profile.firstName}
                       placeholder="Input Here..."
                     />
                   </div>
@@ -39,7 +50,7 @@ function personalInfo() {
                     <label htmlFor="">Last Name</label>
                     <input
                       type="text"
-                      value="Ibu"
+                      value={profile.lastName}
                       placeholder="Input Here..."
                     />
                   </div>
@@ -47,7 +58,7 @@ function personalInfo() {
                     <label htmlFor="">Verified E-mail</label>
                     <input
                       type="text"
-                      value="kolakibu@mail.com"
+                      value={profile.email}
                       placeholder="Input Here..."
                     />
                   </div>
@@ -56,12 +67,16 @@ function personalInfo() {
                       <label htmlFor="">Phone Number</label>
                       <input
                         type="text"
-                        // value="+62 813-9387-7946"
+                        value={
+                          !profile.noTelp
+                            ? "+62-xx-xxxx-xxxx"
+                            : `+62${profile.noTelp}`
+                        }
                         placeholder="Input Here..."
                       />
                     </div>
                     <div className={css["right"]}>
-                      <p>Manage</p>
+                      <p onClick={toEditPhone}>Manage</p>
                     </div>
                   </div>
                 </form>
@@ -75,4 +90,4 @@ function personalInfo() {
   );
 }
 
-export default personalInfo;
+export default Information;

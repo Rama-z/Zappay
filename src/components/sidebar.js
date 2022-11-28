@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import axios from "axios";
 import React, { use, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Styles from "styles/Sidebar.module.css";
@@ -17,6 +18,10 @@ function Sidebar() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
+  const [showTopUp, setShowTopUp] = useState(false);
+  const [errMsg, setErrMsg] = useState();
+  const [isLoading, setisLoading] = useState(false);
+  const [amount, setAmount] = useState();
 
   useEffect(() => {
     console.log(router.pathname.includes("history"));
@@ -48,7 +53,7 @@ function Sidebar() {
     setTransfer(true);
     setTopUp(false);
     setProfile(false);
-    router.push(`/transfer/${user.profile.firstName}`);
+    router.push(`/transfer`);
   };
   const topupHandler = (e) => {
     e.preventDefault();
@@ -56,7 +61,7 @@ function Sidebar() {
     setTransfer(false);
     setTopUp(true);
     setProfile(false);
-    // router.push(`/topup/${user.profile.firstName}`);
+    setShowTopUp(true);
   };
   const profileHandler = (e) => {
     e.preventDefault();
@@ -64,11 +69,59 @@ function Sidebar() {
     setTransfer(false);
     setTopUp(false);
     setProfile(true);
-    router.push(`/profile/${user.profile.firstName}`);
+    router.push(`/profile`);
   };
 
   const toggleHandler = () => {
     setShow(!show);
+  };
+
+  const amountHandler = (e) => {
+    const letters = /^[A-Za-z]+$/;
+    if (e.target.value.match(letters)) {
+      return (e.target.value = "");
+    }
+    let v = e.target.value.replace(/[^\dA-Z]/g, "");
+    e.target.value = v
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+      .replace(/[^0-9]+$/, "");
+    if (e.target.value.includes(".")) {
+      const data = e.target.value.split(".").join("");
+      return setAmount(data);
+    }
+    setAmount(e.target.value);
+  };
+
+  const submitHandler = (e) => {
+    setErrMsg();
+    setisLoading(true);
+    if (!amount || amount.length === 0)
+      return setErrMsg("Input Amount First !");
+    const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/transaction/top-up`;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth.userData.token}`,
+      },
+    };
+    axios
+      .post(baseUrl, { amount: amount }, config)
+      .then((results) => {
+        console.log("sukses");
+        console.log(results);
+        setisLoading(false);
+        setShowTopUp(false);
+        setTopUp(false);
+        openInNewTab(results.data.data.redirectUrl);
+      })
+      .catch((err) => {
+        setisLoading(false);
+        setErrMsg("System Error");
+      });
+  };
+
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+    if (newWindow) newWindow.opener = null;
   };
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -233,6 +286,54 @@ function Sidebar() {
         </div>
       </div>
       <ModalLogout open={modalOpen} setOpen={setModalOpen} />
+      {showTopUp && (
+        <>
+          <div className={Styles.modal}>
+            <div className={Styles["modal-container-topup"]}>
+              <div className={Styles["modal-top"]}>
+                <p>Topup</p>
+                <i
+                  className={`fa-regular fa-x ${Styles["icon"]}`}
+                  onClick={() => {
+                    setShowTopUp(false);
+                    setTopUp(false);
+                  }}
+                ></i>
+              </div>
+              <p className={Styles["title-topup"]}>
+                Enter the amount of money, and click submit
+              </p>
+              <div className={Styles["input-topup"]}>
+                <p>RP</p>
+                <div className={Styles.line}></div>
+                <input name="amount" onChange={amountHandler}></input>
+              </div>
+              {errMsg && (
+                <p
+                  style={{
+                    color: "var(--red)",
+                    fontWeight: "700",
+                    textAlign: "center",
+                    position: "absolute",
+                    top: "270px",
+                    left: "35%",
+                  }}
+                >
+                  {errMsg}
+                </p>
+              )}
+              <div
+                className={`${Styles["topup-submit"]} ${
+                  isLoading ? Styles.loading : undefined
+                }`}
+                onClick={submitHandler}
+              >
+                <p>Submit</p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
