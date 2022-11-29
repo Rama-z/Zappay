@@ -166,7 +166,7 @@ function Home({ children }) {
                     <p
                       className={css["seall"]}
                       onClick={() => {
-                        router.push(`/history/${user.profile.firstName}`);
+                        router.push(`/history`);
                       }}
                     >
                       See all

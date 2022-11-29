@@ -60,21 +60,33 @@ export default function Home() {
               <div className={filter ? css.filterDownOn : css.filterDownOff}>
                 <p
                   className={css.filterDownOn2}
-                  onClick={() => {
-                    setFiltering("send");
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push(`/history?filters=WEEK`);
                     setFilter(filter ? false : true);
                   }}
                 >
-                  Send
+                  WEEK
                 </p>
                 <p
                   className={css.filterDownOn2}
-                  onClick={() => {
-                    setFiltering("accept");
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push(`/history?filters=MONTH`);
                     setFilter(filter ? false : true);
                   }}
                 >
-                  Accept
+                  MONTH
+                </p>
+                <p
+                  className={css.filterDownOn2}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push(`/history?filters=YEAR`);
+                    setFilter(filter ? false : true);
+                  }}
+                >
+                  YEAR
                 </p>
               </div>
             </div>
