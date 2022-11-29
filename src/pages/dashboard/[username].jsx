@@ -128,7 +128,7 @@ function Home({ children }) {
                 <div className={css["top-left"]}>
                   <p className={css.balance}>Balance</p>
                   <p className={css.price}>{currency(user.profile.balance)}</p>
-                  <p className={css.phone}>{user.profile.noTelp}</p>
+                  <p className={css.phone}>+62{user.profile.noTelp}</p>
                 </div>
                 <div className={`${css["top-btn"]} ${css.btnHide}`}>
                   <div className={css.btn}>
