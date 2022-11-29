@@ -10,15 +10,25 @@ import user1 from "src/assets/1.png";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import userAction from "src/redux/actions/user";
-// import { createSearchParams, useSearchParams } from "react-router-dom";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
 function Home({ children }) {
+  ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
   const router = useRouter();
   const link = process.env.NEXT_PUBLIC_CLOUDINARY_LINK;
   const dispatch = useDispatch();
-  // const [searchParams, setSearchParams] = useSearchParams();
+  const statistic = useSelector((state) => state.user.dashboard);
   const [query, setQuery] = useState({});
   const currency = (price) => {
     return (
@@ -44,6 +54,65 @@ function Home({ children }) {
     );
   }, [auth, dispatch]);
 
+  const incomeData = {
+    label: "Income",
+    data: statistic.listIncome
+      ? [
+          statistic.listIncome[5].total,
+          statistic.listIncome[6].total,
+          statistic.listIncome[0].total,
+          statistic.listIncome[1].total,
+          statistic.listIncome[2].total,
+          statistic.listIncome[3].total,
+          statistic.listIncome[4].total,
+        ]
+      : [],
+    backgroundColor: "#6379F4",
+  };
+
+  const expenseData = {
+    label: "Expense",
+    data: statistic.listExpense
+      ? [
+          statistic.listExpense[5].total,
+          statistic.listExpense[6].total,
+          statistic.listExpense[0].total,
+          statistic.listExpense[1].total,
+          statistic.listExpense[2].total,
+          statistic.listExpense[3].total,
+          statistic.listExpense[4].total,
+        ]
+      : [],
+    backgroundColor: "#9DA6B5",
+  };
+
+  const data = {
+    labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
+    datasets: [incomeData, expenseData],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          display: false,
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
+    legend: {
+      label: {
+        fontSize: 14,
+        fontFamily: "Nunito Sans",
+      },
+    },
+  };
   return (
     <>
       <Header title={"HOME"} />
@@ -125,39 +194,8 @@ function Home({ children }) {
                       </p>
                     </div>
                   </div>
-                  <div className={css["left-middle"]}>
-                    <p className={css["plus"]}>+Rp65.000</p>
-                    <div className={css["static"]}>
-                      <div className={css.sat}></div>
-                      <p>Sat</p>
-                    </div>
-                    <div className={css["static"]}>
-                      <div className={css.sun}></div>
-                      <p>Sun</p>
-                    </div>
-                    <div className={css["static"]}>
-                      <div className={css.mon}></div>
-                      <p>Mon</p>
-                    </div>
-                    <div className={css["static"]}>
-                      <div className={css.tue}>
-                        <div className={css.circle}></div>
-                        <div className={css["circle-blue"]}></div>
-                      </div>
-                      <p>Tue</p>
-                    </div>
-                    <div className={css["static"]}>
-                      <div className={css.wed}></div>
-                      <p>Wed</p>
-                    </div>
-                    <div className={css["static"]}>
-                      <div className={css.thu}></div>
-                      <p>Thu</p>
-                    </div>
-                    <div className={css["static"]}>
-                      <div className={css.fri}></div>
-                      <p>Fri</p>
-                    </div>
+                  <div className={css.bartrans}>
+                    <Bar data={data} options={chartOptions} />
                   </div>
                 </aside>
                 <div className={css["bottom-right"]}>
