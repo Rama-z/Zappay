@@ -320,7 +320,8 @@
 
 .bartrans {
   position: relative;
-  top: 5rem;
+  top: 4rem;
+  /* height: 17rem !important; */
 }
 
 @media screen and (max-width: 567px) {

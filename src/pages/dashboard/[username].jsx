@@ -155,7 +155,7 @@ function Home({ children }) {
                   <div className={css["left-top"]}>
                     <div>
                       <i
-                        className="fa-solid fa-arrow-down"
+                        className="fa-solid fa-arrow-down mt-5"
                         style={{
                           color: "#1EC15F",
                           fontSize: "30px",
@@ -175,7 +175,7 @@ function Home({ children }) {
                     </div>
                     <div>
                       <i
-                        className="fa-solid fa-arrow-up"
+                        className="fa-solid fa-arrow-up mt-5"
                         style={{
                           color: "#FF5B37",
                           fontSize: "30px",
@@ -194,9 +194,11 @@ function Home({ children }) {
                       </p>
                     </div>
                   </div>
-                  <div className={css.bartrans}>
-                    <Bar data={data} options={chartOptions} />
-                  </div>
+                  <Bar
+                    data={data}
+                    options={chartOptions}
+                    className={css.bartrans}
+                  />
                 </aside>
                 <div className={css["bottom-right"]}>
                   <div className={css["right-top"]}>
