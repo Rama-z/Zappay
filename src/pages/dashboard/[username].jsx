@@ -39,6 +39,7 @@ function Home({ children }) {
     );
   };
   useEffect(() => {
+    if (user.isError) router.push("/login");
     if (auth.isFulfilled)
       dispatch(
         userAction.getUserExpenseThunk(auth.userData.token, auth.userData.id)
