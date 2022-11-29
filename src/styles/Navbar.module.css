@@ -140,9 +140,11 @@
   }
 
   .mobile {
-    display: flex;
+    display: none;
     gap: 1rem;
     align-items: center;
+    width: 5px;
+    height: 5px;
   }
 
   .pc {

@@ -423,4 +423,13 @@
     -ms-border-radius: 25px;
     -o-border-radius: 25px;
   }
+
+  .paginasi {
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 3rem;
+    right: 3.8rem;
+  }
 }

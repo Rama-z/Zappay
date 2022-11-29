@@ -400,4 +400,13 @@
   .filter {
     width: 14rem;
   }
+
+  .paginasi {
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 3rem;
+    right: 3.8rem;
+  }
 }
