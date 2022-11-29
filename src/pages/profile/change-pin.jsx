@@ -36,7 +36,7 @@ function CreatePin() {
   };
 
   const createPinSuccess = () => {
-    toast.success(`Congrats! ${body.email} your pin created successfully!`);
+    toast.success(`Congrats! your pin created successfully!`);
     router.push("/profile");
   };
 
@@ -52,6 +52,7 @@ function CreatePin() {
       return toast.error("Your pin Isn't Matched, Re-enter your pin");
     }
     const body = { pin: pin1 };
+    console.log(body);
     dispatch(
       userAction.editPinThunk(
         userData.token,
@@ -111,6 +112,7 @@ function CreatePin() {
               <div
                 className={styles[showConfirmInput ? "hide" : "code-wrapper"]}
               >
+                <div>Enter your new pin</div>
                 <ReactCodeInput
                   type="password"
                   fields={6}
@@ -120,6 +122,7 @@ function CreatePin() {
               <div
                 className={styles[showConfirmInput ? "code-wrapper" : "hide"]}
               >
+                <div>Re enter your new pin</div>
                 <ReactCodeInput
                   type="password"
                   fields={6}
