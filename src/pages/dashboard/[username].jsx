@@ -199,6 +199,7 @@ function Home({ children }) {
                     data={data}
                     options={chartOptions}
                     className={css.bartrans}
+                    height={200}
                   />
                 </aside>
                 <div className={css["bottom-right"]}>
