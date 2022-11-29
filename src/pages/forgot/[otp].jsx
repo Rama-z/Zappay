@@ -53,7 +53,6 @@ export default function ResetPassword() {
     if (auth.isLoading) setEmptyForm(true);
   }, [auth]);
 
-  console.log(body);
   return (
     <>
       <PageTitle title="Reset Password" />

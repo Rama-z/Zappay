@@ -30,7 +30,6 @@ function CreatePin() {
 
   const handlerPin1 = (e) => setPin1(`${e}`);
   const handlerPin2 = (e) => setPin2(`${e}`);
-  console.log(pin1, pin2);
   const showConfirmHandler = (pin1) => {
     if (pin1.length != 6) return setShowConfirmInput(false);
     return setShowConfirmInput(true);

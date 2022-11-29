@@ -23,26 +23,11 @@ function EditPhone() {
   const changeHandler = (e) =>
     setBody({ ...body, [e.target.name]: e.target.value });
 
-  const editPhoneSuccess = () => {
-    toast.success("Your phone number updated successfully!");
-    router.push("/profile/information");
-  };
-  // const editPhoneError = () => {
-  //   if (body.length < 12) return toast.error("harus 12 jir");
-  // };
-
-  console.log(body);
-
   const editPhoneHandler = (e) => {
     e.preventDefault();
-    dispatch(
-      userAction.editPhoneThunk(
-        userData.token,
-        userData.id,
-        body,
-        editPhoneSuccess
-      )
-    );
+    dispatch(userAction.editPhoneThunk(userData.token, userData.id, body));
+    toast.success("Your phone number successfully updated!");
+    router.push("/profile");
   };
 
   useEffect(() => {

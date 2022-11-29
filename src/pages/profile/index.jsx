@@ -14,6 +14,7 @@ import authAction from "src/redux/actions/auth";
 import userAction from "src/redux/actions/user";
 
 function Profile() {
+  const user = useSelector((state) => state.user);
   const router = useRouter();
   const dispatch = useDispatch();
   const logoutMsg = useSelector((state) => state.auth.logoutMsg);
@@ -44,10 +45,11 @@ function Profile() {
   const editImageHandler = (e) => {
     const body = new FormData();
     body.append("image", e.target.files[0]);
-
     dispatch(
       userAction.editImageThunk(auth.userData.token, auth.userData.id, body)
     );
+    if (user.isFulfilled)
+      toast.success("Edit image success, please reload your browser!");
   };
 
   useEffect(() => {

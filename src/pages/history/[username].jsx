@@ -11,7 +11,7 @@ import userAction from "src/redux/actions/user";
 import Loading from "src/Components/Loading";
 import { useRouter } from "next/router";
 
-function Home() {
+export default function Home() {
   const isData = true;
   const [filter, setFilter] = useState(false);
   const user = useSelector((state) => state.user);
@@ -153,5 +153,3 @@ function Home() {
     </>
   );
 }
-
-export default Home;

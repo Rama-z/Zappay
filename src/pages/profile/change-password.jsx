@@ -53,7 +53,7 @@ function Changepassword() {
     toast.success("Congrats! your password updated successfully!");
     router.push("/profile");
   };
-  // console.log(errorMsg);
+
   const editPassError = () => {
     toast.error(`${errorMsg}`);
   };
@@ -88,13 +88,13 @@ function Changepassword() {
         editPassError
       )
     );
+    toast.success("Congrats! your password updated successfully!");
+    router.push("/profile");
   };
 
   useEffect(() => {
     checkEmptyForm(body);
   }, [body]);
-
-  console.log(body);
 
   return (
     <>

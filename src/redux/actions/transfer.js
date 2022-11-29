@@ -30,7 +30,6 @@ const transferThunk = (token, body, cb) => {
     try {
       dispatch(transferPending());
       const result = await transfer(token, body);
-      console.log(result);
       if (typeof cb === "function") {
         cb();
       }

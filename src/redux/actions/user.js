@@ -184,7 +184,6 @@ const getAllUserThunk = (token, link) => {
     try {
       dispatch(userGetAllPending());
       const result = await getAllUser(token, link);
-      console.log(result);
       dispatch(userGetAllFulfilled(result.data));
     } catch (error) {
       dispatch(userGetAllRejected(error));
@@ -197,7 +196,6 @@ const getUserDetailThunk = (token, id) => {
     try {
       dispatch(userDetailPending());
       const result = await getDetailUser(token, id);
-      console.log(result);
       dispatch(userDetailFulfilled(result.data));
     } catch (error) {
       dispatch(userDetailRejected(error));
@@ -210,7 +208,6 @@ const getUserDetail2Thunk = (token, id) => {
     try {
       dispatch(userDetail2Pending());
       const result = await getDetailUser2(token, id);
-      console.log(result);
       dispatch(userDetail2Fulfilled(result.data));
     } catch (error) {
       dispatch(userDetail2Rejected(error));
@@ -223,7 +220,6 @@ const getUserExpenseThunk = (token, id) => {
     try {
       dispatch(userExpensePending());
       const result = await getExpense(token, id);
-      console.log(result);
       dispatch(userExpenseFulfilled(result.data));
     } catch (error) {
       dispatch(userExpenseRejected(error));
@@ -236,7 +232,6 @@ const getUserHistoryThunk = (token, link) => {
     try {
       dispatch(userHistoryPending());
       const result = await getHistory(token, link);
-      console.log(result);
       dispatch(userHistoryFulfilled(result.data));
     } catch (error) {
       dispatch(userHistoryRejected(error));
@@ -324,7 +319,6 @@ const checkPinThunk = (pin, token, callback) => {
       dispatch(checkPinPending());
       const result = await checkPin(pin, token);
       dispatch(checkPinFulfilled(result));
-      console.log(typeof callback);
       if (typeof callback === "function") {
         callback();
       }

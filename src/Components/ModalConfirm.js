@@ -19,6 +19,7 @@ const ModalConfirm = ({ open, setOpen }) => {
   const navigate = () => {
     router.push("/transfer/status");
   };
+
   const transferHandler = () => {
     dispatch(
       transferDataActions.transferThunk(
@@ -31,8 +32,6 @@ const ModalConfirm = ({ open, setOpen }) => {
         navigate
       )
     );
-    if (transfer.isFulfilled) console.log("sukses");
-    if (transfer.isError) console.log("error");
   };
 
   const checkPinHandler = async (e) => {

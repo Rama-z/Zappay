@@ -59,7 +59,9 @@ function Status() {
               </div>
               <div className={styles["item-container"]}>
                 <p className={styles["info-label"]}>Balance Left</p>
-                <p className={styles["info-value"]}>{user.profile.balance}</p>
+                <p className={styles["info-value"]}>
+                  {user.profile.balance - transfer.transferData.amount}
+                </p>
               </div>
               <div className={styles["item-container"]}>
                 <p className={styles["info-label"]}>Date & Time</p>

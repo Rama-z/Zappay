@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import axios from "axios";
 import Image from "next/image";
 import Header from "src/Components/Header";
 import Navbar from "src/Components/Navbar";
@@ -15,9 +16,8 @@ import transferDataActions from "src/redux/actions/transfer";
 
 // const ReactCodeInput = dynamic(import("react-code-input"));
 
-function Home() {
+export default function Home({ Fragment }) {
   const router = useRouter();
-  console.log(router);
   const [filter, setFilter] = useState(false);
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
@@ -41,7 +41,6 @@ function Home() {
       ? getAllUser(token, page, router.query.querys)
           .then((res) => {
             setUserData(res.data.data);
-
             setPaginationData(res.data.pagination);
           })
           .catch((err) => console.log(err))
@@ -155,5 +154,3 @@ function Home() {
     </>
   );
 }
-
-export default Home;

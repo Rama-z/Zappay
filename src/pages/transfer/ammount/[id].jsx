@@ -18,11 +18,9 @@ import transferDataActions from "src/redux/actions/transfer";
 function Home() {
   const router = useRouter();
   const user = useSelector((state) => state.user);
-  console.log(user.profileTarget.image);
   const auth = useSelector((state) => state.auth);
   const link = process.env.NEXT_PUBLIC_CLOUDINARY_LINK;
   const [body, setBody] = useState({});
-  console.log(body);
   const [filter, setFilter] = useState(false);
   const dispatch = useDispatch();
 

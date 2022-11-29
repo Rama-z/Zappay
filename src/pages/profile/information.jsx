@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import userAction from "src/redux/actions/user";
 import PageTitle from "src/Components/PageTitle";
 import Navbar from "src/Components/Navbar";
+import { toast } from "react-toastify";
 
 function Detail() {
   const router = useRouter();
@@ -39,9 +40,8 @@ function Detail() {
       firstName: firstName,
       lastName: lastName,
     };
-    console.log(body);
     dispatch(userAction.editProfileThunk(userData.token, userData.id, body));
-
+    toast.success("Success updating name!");
     router.push("/profile");
   };
 
@@ -100,7 +100,6 @@ function Detail() {
                       placeholder="Input Here..."
                       onChange={(e) => {
                         setFirstName(e.target.value);
-                        console.log(firstName);
                       }}
                     />
                   </div>
@@ -115,7 +114,6 @@ function Detail() {
                       placeholder="Input Here..."
                       onChange={(e) => {
                         setLastName(e.target.value);
-                        console.log(lastName);
                       }}
                     />
                   </div>

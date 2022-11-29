@@ -21,7 +21,6 @@ const initialState = {
 const transferReducer = (prevState = initialState, { type, payload }) => {
   const { Pending, Rejected, Fulfilled } = ActionType;
   const { transferData, transfer } = actionStrings;
-  console.log(payload);
   switch (type) {
     case actionStrings.resetTransfer:
       return initialState;
@@ -52,7 +51,6 @@ const transferReducer = (prevState = initialState, { type, payload }) => {
         error: payload.error.message,
       };
     case transfer.concat("_", Fulfilled):
-      console.log(payload);
       return {
         ...prevState,
         isError: false,
