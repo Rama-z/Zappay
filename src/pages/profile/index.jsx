@@ -25,6 +25,7 @@ function Profile() {
   const inputFileRef = React.createRef();
   const [modalOpen, setModalOpen] = useState(false);
   const modalhandler = () => setModalOpen(!modalOpen);
+  const [imgPrev, setImgPrev] = useState(null);
 
   const inputImage = () => {
     inputFileRef.current.click();
@@ -43,6 +44,7 @@ function Profile() {
   };
 
   const editImageHandler = (e) => {
+    setImgPrev(URL.createObjectURL(e.target.files[0]));
     const body = new FormData();
     body.append("image", e.target.files[0]);
     dispatch(
@@ -56,7 +58,7 @@ function Profile() {
     dispatch(
       userAction.getUserDetailThunk(auth.userData.token, auth.userData.id)
     );
-  }, [auth, dispatch]);
+  }, [auth, dispatch, imgPrev]);
 
   return (
     <>
@@ -73,7 +75,7 @@ function Profile() {
                   <div className={css["photo"]}>
                     <Image
                       alt="profile"
-                      src={!profile.image ? sample : `${link}/${profile.image}`}
+                      src={imgPrev || `${link}/${profile.image}` || sample}
                       placeholder="blur"
                       blurDataURL={"./assets/avatar.jpg"}
                       onError={() => "./assets/avatar.jpg"}
