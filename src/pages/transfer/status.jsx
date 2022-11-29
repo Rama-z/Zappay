@@ -24,7 +24,14 @@ function Status() {
   const hour = newDate.getHours();
   const minute = newDate.getMinutes();
   const link = process.env.NEXT_PUBLIC_CLOUDINARY_LINK;
-
+  const currency = (price) => {
+    return (
+      "Rp. " +
+      parseFloat(price)
+        .toFixed()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    );
+  };
   return (
     <>
       <Header title={"Status"} />
@@ -54,13 +61,15 @@ function Status() {
               <div className={styles["item-container"]}>
                 <p className={styles["info-label"]}>Amount</p>
                 <p className={styles["info-value"]}>
-                  {transfer.transferData.amount}
+                  {currency(transfer.transferData.amount)}
                 </p>
               </div>
               <div className={styles["item-container"]}>
                 <p className={styles["info-label"]}>Balance Left</p>
                 <p className={styles["info-value"]}>
-                  {user.profile.balance - transfer.transferData.amount}
+                  {currency(
+                    user.profile.balance - transfer.transferData.amount
+                  )}
                 </p>
               </div>
               <div className={styles["item-container"]}>

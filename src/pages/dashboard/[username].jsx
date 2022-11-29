@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { currency as currencyComma } from "src/modules/helpers/currency";
 import Image from "next/image";
 import Header from "src/Components/Header";
 import Navbar from "src/Components/Navbar";
@@ -19,7 +20,14 @@ function Home({ children }) {
   const dispatch = useDispatch();
   // const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState({});
-
+  const currency = (price) => {
+    return (
+      "Rp. " +
+      parseFloat(price)
+        .toFixed()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    );
+  };
   useEffect(() => {
     if (auth.isFulfilled)
       dispatch(
@@ -49,7 +57,7 @@ function Home({ children }) {
               <div className={css["side-top"]}>
                 <div className={css["top-left"]}>
                   <p className={css.balance}>Balance</p>
-                  <p className={css.price}>Rp. {user.profile.balance}</p>
+                  <p className={css.price}>{currency(user.profile.balance)}</p>
                   <p className={css.phone}>{user.profile.noTelp}</p>
                 </div>
                 <div className={`${css["top-btn"]} ${css.btnHide}`}>
@@ -93,7 +101,7 @@ function Home({ children }) {
                           marginTop: "0.5rem",
                         }}
                       >
-                        Rp{user.dashboard.totalIncome}
+                        {currencyComma(user.dashboard.totalIncome)}
                       </p>
                     </div>
                     <div>
@@ -113,7 +121,7 @@ function Home({ children }) {
                           marginTop: "0.5rem",
                         }}
                       >
-                        Rp{user.dashboard.totalExpense}
+                        Rp{currencyComma(user.dashboard.totalExpense)}
                       </p>
                     </div>
                   </div>
@@ -191,10 +199,10 @@ function Home({ children }) {
                               }
                             >
                               {item.type === "accept"
-                                ? `+${item.amount}`
+                                ? `+${currency(item.amount)}`
                                 : item.type === "topup"
-                                ? `+${item.amount}`
-                                : `-${item.amount}`}
+                                ? `+${currency(item.amount)}`
+                                : `-${currency(item.amount)}`}
                             </p>
                           </div>
                         </div>

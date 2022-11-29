@@ -27,7 +27,14 @@ function Home() {
   const modalhandler = () => setModalOpen(!modalOpen);
   // const link = process.env.CLOUDINARY_LINK;
   const link = `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1666604839`;
-
+  const currency = (price) => {
+    return (
+      "Rp. " +
+      parseFloat(price)
+        .toFixed()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    );
+  };
   return (
     <>
       <Header title={"HOME"} />
@@ -70,14 +77,16 @@ function Home() {
               <div>
                 <p className={css.details}>Amount</p>
                 <p className={css.subdetails}>
-                  Rp{transfer.transferData.amount}
+                  {currency(transfer.transferData.amount)}
                 </p>
               </div>
             </div>
             <div className={css["card-detail"]}>
               <div>
                 <p className={css.details}>Balance</p>
-                <p className={css.subdetails}>Rp{user.profile.balance}</p>
+                <p className={css.subdetails}>
+                  {currency(user.profile.balance)}
+                </p>
               </div>
             </div>
             <div className={css["card-detail"]}>

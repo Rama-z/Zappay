@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { currency as currencyComma } from "src/modules/helpers/currency";
 import Image from "next/image";
 import Header from "src/Components/Header";
 import Navbar from "src/Components/Navbar";
@@ -21,7 +22,14 @@ export default function Home() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
-
+  const currency = (price) => {
+    return (
+      "Rp. " +
+      parseFloat(price)
+        .toFixed()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    );
+  };
   useEffect(() => {
     dispatch(
       userAction.getUserHistoryThunk(
@@ -106,10 +114,10 @@ export default function Home() {
                           }
                         >
                           {item.type === "accept"
-                            ? `+${item.amount}`
+                            ? `+${currency(item.amount)}`
                             : item.type === "topup"
-                            ? `+${item.amount}`
-                            : `-${item.amount}`}
+                            ? `+${currency(item.amount)}`
+                            : `-${currency(item.amount)}`}
                         </p>
                       </div>
                     </div>

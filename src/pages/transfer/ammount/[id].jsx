@@ -31,7 +31,14 @@ function Home() {
     e.preventDefault();
     dispatch(transferDataActions.transferData(body));
   };
-
+  const currency = (price) => {
+    return (
+      "Rp. " +
+      parseFloat(price)
+        .toFixed()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    );
+  };
   useEffect(() => {
     dispatch(
       userAction.getUserDetail2Thunk(auth.userData.token, router.query.id)
@@ -91,7 +98,7 @@ function Home() {
                 />
               </div>
               <div className={css.availability}>
-                Rp{user.profile.balance} Available
+                {currency(user.profile.balance)} Available
               </div>
               <div className={css["input-transfer2"]}>
                 <Image className={css["image-pen"]} src={pen} alt="pen" />
