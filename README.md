@@ -22,8 +22,6 @@ Zappay is a digital system that stores a person’s payment information.
 - [Run Application](#how-to-run-the-application)
 - [Deployment](#deployment)
 - [Screenshots](#screenshots)
-- [Related Projects](#related-projects)
-- [Contributors](#contributors)
 
 ## Features
 
