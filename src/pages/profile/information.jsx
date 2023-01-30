@@ -35,7 +35,6 @@ function Detail() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     const body = {
       firstName: firstName,
       lastName: lastName,

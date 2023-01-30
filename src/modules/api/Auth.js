@@ -1,5 +1,13 @@
 import axios from "axios";
 
+const config = (token) => {
+  return {
+    header: {
+      "x-access-token": `${token}`,
+    },
+  };
+};
+
 const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth`;
 
 export const register = (body) => axios.post(`${baseUrl}/register`, body);

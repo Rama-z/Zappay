@@ -59,13 +59,13 @@ function Home({ children }) {
     label: "Income",
     data: statistic.listIncome
       ? [
-          statistic.listIncome[5].total,
-          statistic.listIncome[6].total,
-          statistic.listIncome[0].total,
-          statistic.listIncome[1].total,
-          statistic.listIncome[2].total,
-          statistic.listIncome[3].total,
-          statistic.listIncome[4].total,
+          statistic.listIncome[5]?.total,
+          statistic.listIncome[6]?.total,
+          statistic.listIncome[0]?.total,
+          statistic.listIncome[1]?.total,
+          statistic.listIncome[2]?.total,
+          statistic.listIncome[3]?.total,
+          statistic.listIncome[4]?.total,
         ]
       : [],
     backgroundColor: "#6379F4",
@@ -75,13 +75,13 @@ function Home({ children }) {
     label: "Expense",
     data: statistic.listExpense
       ? [
-          statistic.listExpense[5].total,
-          statistic.listExpense[6].total,
-          statistic.listExpense[0].total,
-          statistic.listExpense[1].total,
-          statistic.listExpense[2].total,
-          statistic.listExpense[3].total,
-          statistic.listExpense[4].total,
+          statistic.listExpense[5]?.total,
+          statistic.listExpense[6]?.total,
+          statistic.listExpense[0]?.total,
+          statistic.listExpense[1]?.total,
+          statistic.listExpense[2]?.total,
+          statistic.listExpense[3]?.total,
+          statistic.listExpense[4]?.total,
         ]
       : [],
     backgroundColor: "#9DA6B5",

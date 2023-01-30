@@ -46,6 +46,7 @@ export default function ResetPassword() {
     if (body.newPassword !== body.confirmPassword) return setNotSimilar(true);
     dispatch(authAction.resetThunk(body, resetSuccess, resetDenied));
   };
+
   useEffect(() => {
     checkEmptyForm(body);
   }, [body]);

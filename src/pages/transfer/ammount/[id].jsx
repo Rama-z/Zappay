@@ -31,6 +31,7 @@ function Home() {
     e.preventDefault();
     dispatch(transferDataActions.transferData(body));
   };
+
   const currency = (price) => {
     return (
       "Rp. " +
