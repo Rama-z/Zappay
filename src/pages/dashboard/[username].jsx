@@ -156,7 +156,7 @@ function Home({ children }) {
                   <div className={css["left-top"]}>
                     <div>
                       <i
-                        className="fa-solid fa-arrow-down mt-5"
+                        className="fa-solid fa-arrow-down mt-2"
                         style={{
                           color: "#1EC15F",
                           fontSize: "30px",
@@ -176,7 +176,7 @@ function Home({ children }) {
                     </div>
                     <div>
                       <i
-                        className="fa-solid fa-arrow-up mt-5"
+                        className="fa-solid fa-arrow-up mt-2"
                         style={{
                           color: "#FF5B37",
                           fontSize: "30px",
