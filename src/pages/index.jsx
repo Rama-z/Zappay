@@ -3,9 +3,9 @@ import Image from "next/image";
 import styles from "src/styles/LandingPage.module.css";
 import Header from "src/Components/Header";
 import Button from "src/Components/Button";
-
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-
 import phone from "src/assets/phone.svg";
 import phone2 from "src/assets/phone2.svg";
 import playstore from "src/assets/playStore.svg";
